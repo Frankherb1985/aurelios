@@ -146,6 +146,23 @@ function renderPositions(){
     }
   });
 }
+document.getElementById('importSeries').onclick = () => {
+  const sym = (document.getElementById('seriesSym').value || '').trim().toUpperCase();
+  const raw = (document.getElementById('seriesData').value || '').trim();
+  if(!sym || !raw) { elMsg.textContent = "Enter symbol + prices"; return }
+
+  const lines = raw.split(/\r?\n/).map(s=>+s).filter(n=>!isNaN(n));
+  if(lines.length < 2) { elMsg.textContent = "Need 2+ numbers"; return }
+
+  state.prices[sym] = lines;
+
+  // If there's an existing position, update last price
+  const i = state.positions.findIndex(p => p.symbol === sym);
+  if(i >= 0) state.positions[i].last = lines[lines.length-1];
+
+  save();
+  render();
+};
 function render(){
   elRisk.value = Math.round(state.maxRisk*100)
   elRiskLabel.textContent = `${Math.round(state.maxRisk*100)}%`
