@@ -41,7 +41,16 @@
             <div class="col">
               <label>Price</label>
               <input id="price" type="number" inputmode="decimal" placeholder="150">
-            </div>
+         <div class="card">
+  <label>Import Prices (one per line) for a symbol</label>
+  <input id="seriesSym" placeholder="AAPL" autocapitalize="characters">
+  <textarea id="seriesData" rows="6" placeholder="e.g.
+150
+151.2
+149.8
+153.1"></textarea>
+  <button class="gold" id="importSeries">Import Series</button>
+</div> 
           </div>
           <label>Action</label>
           <select id="mode">
