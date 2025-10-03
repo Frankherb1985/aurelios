@@ -1,10 +1,70 @@
 
 // State & storage
 const SKEY = "AURELIOS_STATE_V1"
-const state = { cash: 10000, maxRisk: 0.02, notes: "", positions: [] } // {symbol, qty, avg, last}
+const state = {
+  cash: 10000,
+  maxRisk: 0.02,
+  notes: "",
+  positions: [],   // {symbol, qty, avg, last}
+  prices: {}       // {symbol: [numbers...]}
+};
 function load(){ try{ Object.assign(state, JSON.parse(localStorage.getItem(SKEY))||{}) }catch(e){} }
 function save(){ localStorage.setItem(SKEY, JSON.stringify(state)); render() }
+function drawSpark(canvasId, arr){
+  const c = document.getElementById(canvasId);
+  if(!c || !arr || arr.length < 2) return;
+  const ctx = c.getContext('2d');
+  const w = c.width, h = c.height;
+  ctx.clearRect(0,0,w,h);
 
+  const min = Math.min(...arr), max = Math.max(...arr);
+  const range = max - min || 1;
+  const step = w / (arr.length - 1);
+
+  // line
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = '#F3C63F';
+  ctx.beginPath();
+  arr.forEach((v,i) => {
+    const x = i * step;
+    const y = h - ((v - min) / range) * (h - 2) - 1;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  // last dot
+  const lastX = (arr.length - 1) * step;
+  const lastY = h - ((arr[arr.length-1] - min) / range) * (h - 2) - 1;
+  ctx.fillStyle = '#F3C63F';
+  ctx.beginPath();
+  ctx.arc(lastX, lastY, 2.5, 0, Math.PI*2);
+  ctx.fill();
+}
+
+function sma(arr, n){
+  if(arr.length < n) return [];
+  const out = [];
+  let sum = 0;
+  for(let i=0;i<arr.length;i++){
+    sum += arr[i];
+    if(i >= n) sum -= arr[i-n];
+    if(i >= n-1) out.push(sum/n);
+  }
+  return out;
+}
+
+function smaSignal(series, shortN, longN){
+  if(!series || series.length < Math.max(shortN, longN)) return null;
+  const s = sma(series, shortN);
+  const l = sma(series, longN);
+  // align ends
+  const offset = s.length - l.length;
+  const sLast = s[s.length-1];
+  const lLast = l[l.length-1 - Math.max(0, offset)];
+  if(sLast > lLast) return 'BULLISH';
+  if(sLast < lLast) return 'BEARISH';
+  return 'NEUTRAL';
+}
 // Utils
 const fmt = n => n.toLocaleString(undefined,{style:'currency',currency:'USD'})
 const pct = n => (n>=0?'+':'') + n.toFixed(2) + '%'
@@ -28,17 +88,50 @@ const elNotes = document.getElementById('notes')
 
 function renderHeader(){ elEquity.textContent = `Equity — ${fmt(equity())}`; elCash.textContent = `Cash — ${fmt(state.cash)}` }
 function renderPositions(){
-  elPos.innerHTML=''
-  if(state.positions.length===0){ elEmpty.style.display='block'; return }
-  elEmpty.style.display='none'
-  state.positions.forEach(p=>{
-    const pnlAbs=(p.last-p.avg)*p.qty, pnlPct=p.avg?((p.last/p.avg-1)*100):0
-    const row=document.createElement('div'); row.className='pos'
-    row.innerHTML = `<div><div class="sym">${p.symbol}</div><div class="meta">Qty ${p.qty} @ ${fmt(p.avg)}</div></div>
-      <div style="text-align:right"><div>${fmt(p.last)}</div>
-      <div class="${pnlAbs>=0?'pnlG':'pnlR'}">${pnlAbs.toFixed(2)} (${pct(pnlPct)})</div></div>`
-    elPos.appendChild(row)
-  })
+  elPos.innerHTML = '';
+  if(state.positions.length === 0){
+    elEmpty.style.display = 'block';
+    return;
+  }
+  elEmpty.style.display = 'none';
+
+  state.positions.forEach(p => {
+    const pnlAbs = (p.last - p.avg) * p.qty;
+    const pnlPct = p.avg ? ((p.last / p.avg - 1) * 100) : 0;
+
+    // Build row
+    const row = document.createElement('div');
+    row.className = 'pos';
+    row.innerHTML = `
+      <div>
+        <div class="sym">${p.symbol}</div>
+        <div class="meta">Qty ${p.qty} @ ${fmt(p.avg)}</div>
+        <div class="meta" id="sig-${p.symbol}"></div>
+      </div>
+      <div style="text-align:right">
+        <div>${fmt(p.last)}</div>
+        <div class="${pnlAbs>=0?'pnlG':'pnlR'}">${pnlAbs.toFixed(2)} (${(pnlPct>=0?'+':'')+pnlPct.toFixed(2)}%)</div>
+        <canvas class="spark" id="spark-${p.symbol}" width="120" height="28" style="margin-top:6px;"></canvas>
+      </div>
+    `;
+    elPos.appendChild(row);
+
+    // Draw sparkline if we have prices
+    const series = state.prices[p.symbol] || [];
+    drawSpark(`spark-${p.symbol}`, series);
+
+    // Show quick signal (5 vs 20 SMA)
+    const sig = smaSignal(series, 5, 20);
+    const sigEl = document.getElementById(`sig-${p.symbol}`);
+    if (sig) {
+      const color = sig === 'BULLISH' ? '#3adf82' : (sig === 'BEARISH' ? '#ea3a49' : '#bdbdbd');
+      sigEl.textContent = `Signal: ${sig}`;
+      sigEl.style.color = color;
+    } else {
+      sigEl.textContent = `Signal: —`;
+      sigEl.style.color = '#9b9b9b';
+    }
+  });
 }
 function render(){
   elRisk.value = Math.round(state.maxRisk*100)
