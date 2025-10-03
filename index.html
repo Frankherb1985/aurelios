@@ -63,6 +63,16 @@
         </div>
         <div class="card">
           <label>Notes</label>
+          <div class="card">
+  <label>Import Prices (one per line) for a symbol</label>
+  <input id="seriesSym" placeholder="AAPL" autocapitalize="characters">
+  <textarea id="seriesData" rows="6" placeholder="e.g.
+150
+151.2
+149.8
+153.1"></textarea>
+  <button class="gold" id="importSeries">Import Series</button>
+</div>
           <textarea id="notes" rows="5" placeholder="Strategy notes..."></textarea>
           <button class="outline" id="saveNotes">Save</button>
         </div>
