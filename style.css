@@ -68,3 +68,4 @@ button.outline{background:transparent; color:var(--gold); border:1px solid rgba(
 .pos .meta{color:var(--muted); font-size:12px}
 .pnlG{color:var(--green)} .pnlR{color:var(--red)}
 .msg{margin-top:8px; font-size:12px}
+.spark { display:block }
