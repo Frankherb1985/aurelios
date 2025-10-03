@@ -76,7 +76,20 @@ document.querySelectorAll('.tabs button').forEach(btn=>btn.onclick=()=>{
   document.querySelectorAll('.tab').forEach(s=>s.classList.remove('active'))
   btn.classList.add('active'); document.getElementById(btn.dataset.tab).classList.add('active')
 })
-
+document.getElementById('importSeries').onclick = () => {
+  const sym = (document.getElementById('seriesSym').value || '').trim().toUpperCase();
+  const raw = (document.getElementById('seriesData').value || '').trim();
+  if(!sym || !raw){ elMsg.textContent = "Enter symbol and prices."; elMsg.style.color='#ea3a49'; return; }
+  const lines = raw.split(/\r?\n/).map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+  if(lines.length < 2){ elMsg.textContent = "Need at least 2 prices."; elMsg.style.color='#ea3a49'; return; }
+  state.prices[sym] = lines;
+  // If there’s an open position, update its last to the last price (optional)
+  const i = state.positions.findIndex(p => p.symbol === sym);
+  if(i>=0){ state.positions[i].last = lines[lines.length-1]; }
+  elMsg.textContent = `Imported ${lines.length} prices for ${sym}.`;
+  elMsg.style.color = '#3adf82';
+  save();
+};
 const elEquity = document.getElementById('equity')
 const elCash = document.getElementById('cash')
 const elPos = document.getElementById('positions')
