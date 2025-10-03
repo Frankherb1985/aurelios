@@ -1,0 +1,70 @@
+
+:root{
+  --bg:#000;
+  --card:#1a1a1a;
+  --gold:#F3C63F;
+  --text:#fff;
+  --muted:#9b9b9b;
+  --green:#3adf82;
+  --red:#ea3a49;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background: radial-gradient(circle at 50% 30%, #0c0c0c, #000 60%);
+  color:var(--text);
+}
+#app{min-height:100%; display:flex; flex-direction:column; padding-bottom:64px}
+.header{
+  position:relative; margin:16px; padding:16px; border-radius:16px;
+  background:var(--card); border:1px solid rgba(243,198,63,.15);
+  overflow:hidden;
+}
+.header .shine{
+  position:absolute; inset:0;
+  background:linear-gradient(120deg, rgba(255,255,255,.12), rgba(255,255,255,.02) 50%, rgba(255,255,255,.15));
+  mix-blend-mode:screen; pointer-events:none;
+}
+.header h1{margin:0 0 6px 0; font-size:22px}
+.header p{margin:0; color:var(--text)}
+.header small{color:var(--muted)}
+
+.content{flex:1; padding:0 16px 8px}
+.card{
+  background:var(--card); border:1px solid rgba(243,198,63,.15);
+  border-radius:16px; padding:14px; margin-bottom:12px;
+}
+.empty{ text-align:center; color:var(--muted) }
+.row{display:flex; gap:12px}
+.col{flex:1}
+label{display:block; font-size:12px; color:var(--muted); margin-bottom:4px}
+input, select, textarea{
+  width:100%; padding:12px; border-radius:12px; border:none; outline:none;
+  background:#121212; color:#fff; border:1px solid #2a2a2a;
+}
+textarea{resize:vertical}
+button{
+  width:100%; padding:12px; border-radius:12px; border:none; margin-top:10px; font-weight:600;
+}
+button.gold{background:var(--gold); color:#000}
+button.outline{background:transparent; color:var(--gold); border:1px solid rgba(243,198,63,.6)}
+
+.tabs{
+  position:fixed; left:0; right:0; bottom:0; display:flex; gap:1px;
+  background:#0b0b0b; border-top:1px solid #202020
+}
+.tabs button{
+  flex:1; background:#0f0f0f; color:#bdbdbd; padding:12px; border-radius:0; border:none;
+}
+.tabs button.active{ color:var(--gold); background:#0a0a0a; font-weight:700 }
+.tab{ display:none } .tab.active{ display:block }
+
+.pos{
+  display:flex; justify-content:space-between; align-items:center; padding:10px;
+  border-radius:12px; background:#121212; border:1px solid #262626; margin-bottom:8px;
+}
+.pos .sym{font-weight:700}
+.pos .meta{color:var(--muted); font-size:12px}
+.pnlG{color:var(--green)} .pnlR{color:var(--red)}
+.msg{margin-top:8px; font-size:12px}
