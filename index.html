@@ -41,6 +41,18 @@
             <div class="col">
               <label>Price</label>
               <input id="price" type="number" inputmode="decimal" placeholder="150">
+                    </div> <!-- end .row (Qty/Price) -->
+
+      <label>Action</label>
+      <select id="mode">
+        <option value="buy">Buy</option>
+        <option value="sell">Sell</option>
+        <option value="update">Update Price</option>
+      </select>
+
+      <div id="msg" class="msg"></div>
+      <button class="gold" id="submit">Submit</button>
+    </div> <!-- end FIRST .card -->
          <div class="card">
   <label>Import Prices (one per line) for a symbol</label>
   <input id="seriesSym" placeholder="AAPL" autocapitalize="characters">
