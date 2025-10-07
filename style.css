@@ -69,3 +69,80 @@ button.outline{background:transparent; color:var(--gold); border:1px solid rgba(
 .pnlG{color:var(--green)} .pnlR{color:var(--red)}
 .msg{margin-top:8px; font-size:12px}
 .spark { display:block }
+/* === AureliOS Dark Theme — add at end of style.css === */
+:root{
+  --gold:#d4af37;
+  --chrome:#e7e7e7;
+  --bg:#0b0b0c;
+  --card:#111;
+  --line:#2a2a2a;
+  --muted:#9a9a9a;
+}
+
+body.theme-dark{ background:var(--bg); color:var(--chrome); -webkit-font-smoothing:antialiased; }
+
+.app-header{ padding:16px; }
+.app-title{ font-size:24px; font-weight:700; color:#f5d97a; }
+.muted{ color:var(--muted); }
+
+.card{
+  background:var(--card);
+  border:1px solid #333;
+  border-radius:14px;
+  padding:16px;
+  margin:12px;
+  box-shadow:0 0 0 1px rgba(212,175,55,.05) inset;
+}
+
+.form label{ display:block; margin:10px 0 6px; font-size:14px; }
+.form input,.form select,.form textarea{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:#1a1a1b;
+  color:var(--chrome);
+}
+
+.row{ display:flex; gap:12px; }
+.row > label{ flex:1; }
+
+.btn{
+  padding:12px 16px;
+  border-radius:12px;
+  border:1px solid #444;
+  background:#1a1a1b;
+  color:var(--chrome);
+}
+.btn.primary{
+  border-color:var(--gold);
+  background:var(--gold);
+  color:#111; font-weight:600;
+}
+.btn.outline{
+  border-color:var(--gold);
+  background:transparent;
+  color:var(--gold);
+}
+.btn.danger{
+  border-color:#8b1e1e; color:#fff; background:#371314;
+}
+
+.table{ width:100%; border-collapse:collapse; }
+.table th,.table td{ padding:8px; border-bottom:1px solid var(--line); }
+.table th{ color:var(--gold); font-weight:600; }
+
+.view{ display:none; }
+.view.active{ display:block; }
+
+.tabbar{
+  position:fixed; left:0; right:0; bottom:0;
+  display:flex; justify-content:space-around; gap:8px;
+  padding:10px; background:#0f0f10; border-top:1px solid #222;
+}
+.tabbar button{
+  flex:1; padding:10px 8px;
+  border-radius:10px; border:1px solid var(--line);
+  background:#161617; color:var(--chrome);
+}
+.tabbar button.active{ border-color:var(--gold); color:var(--gold); }
