@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AureliOS — Frank Herbert</title>
   <link rel="manifest" href="manifest.json" />
-  <!-- bump css version for cache-bust -->
-  <link rel="stylesheet" href="style.css?v=20251007-2" />
+  <link rel="stylesheet" href="style.css?v=20251013-2" />
 </head>
+
 <body class="theme-dark">
   <header class="app-header">
     <div class="app-title">AureliOS</div>
+    <div class="author">Frank Herbert</div>
     <div class="balances">
       <div>Equity — <span data-role="equity">$10,000.00</span></div>
       <div class="muted">Cash — <span data-role="cash">$10,000.00</span></div>
@@ -20,37 +21,23 @@
   <main>
     <!-- DASHBOARD -->
     <section id="view-dashboard" class="view active">
-
-      <!-- HUD / Risk Dial (compact) -->
-      <div class="card">
-        <div class="row" style="align-items:center; gap:12px">
-          <div class="riskDial" style="border-radius:12px;padding:10px 12px;border:1px solid rgba(255,255,255,.08)">
-            Risk <strong><span id="riskVal">0%</span></strong>
-          </div>
-          <div id="hud" class="row" style="gap:14px; font-weight:700">
-            <span id="hudPnl">Δ +0.00</span>
-            <span class="muted">•</span>
-            <span id="hudWr">WR 0%</span>
-            <span class="muted">•</span>
-            <span id="hudStreak">Streak 0</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- WATCHLIST (brand-colored rows render here) -->
-      <div class="card">
-        <h2>Watchlist</h2>
-        <div id="watchlist"></div>
-      </div>
-
-      <div class="card">
+      <div class="card shimmer">
         <h2>Recent Trades</h2>
         <table class="table" data-role="recent-trades">
           <thead>
-            <tr><th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Position $</th><th>PnL</th></tr>
+            <tr>
+              <th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th>
+              <th>Price</th><th>Position $</th><th>PnL</th>
+            </tr>
           </thead>
           <tbody></tbody>
         </table>
+      </div>
+
+      <div class="hud">
+        <div id="hudPnl">Δ +0.00</div>
+        <div id="hudWr">WR 0%</div>
+        <div id="hudStreak">Streak 0</div>
       </div>
     </section>
 
@@ -76,16 +63,14 @@
               <option>Sell</option>
             </select>
           </label>
-
-          <!-- primary button with boxed gold style + action hook -->
-          <button type="submit" class="btn primary btn-primary" data-action="submit-trade">Submit</button>
+          <button type="submit" class="btn primary">Submit</button>
         </form>
       </div>
 
       <div class="card">
         <h2>Notes</h2>
         <textarea data-role="notes-text" placeholder="Strategy notes..." rows="5"></textarea>
-        <button type="button" class="btn outline" data-action="notes-save">Save</button>
+        <button type="button" class="btn outline" data-role="notes-save">Save</button>
       </div>
     </section>
 
@@ -107,17 +92,6 @@
         <button class="btn" data-action="save-policy">Save Policy</button>
         <button class="btn danger" data-action="reset-cash">Reset Cash</button>
       </div>
-
-      <!-- Optional UX toggles -->
-      <div class="card">
-        <h2>Interface</h2>
-        <label style="display:block;margin-bottom:8px">
-          <input id="fx" type="checkbox" checked /> UI sounds
-        </label>
-        <label style="display:block">
-          <input id="rm" type="checkbox" /> Reduce motion
-        </label>
-      </div>
     </section>
   </main>
 
@@ -127,7 +101,6 @@
     <button data-tab="settings">Settings</button>
   </nav>
 
-  <!-- bump js version for cache-bust -->
-  <script src="app.js?v=20251007-2"></script>
+  <script src="app.js?v=20251013-2"></script>
 </body>
 </html>
