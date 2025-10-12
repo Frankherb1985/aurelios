@@ -146,3 +146,52 @@ body.theme-dark{ background:var(--bg); color:var(--chrome); -webkit-font-smoothi
   background:#161617; color:var(--chrome);
 }
 .tabbar button.active{ border-color:var(--gold); color:var(--gold); }
+:root{
+  --gold:#D4AF37; --chrome:#B3B3B3; --bg:#0B0B0B;
+  --glow: rgba(212,175,55,.25);
+}
+
+/* Subtle, continuous panel shimmer */
+@keyframes panelShimmer { 
+  0% { background-position:-200% 0; }
+  100%{ background-position: 200% 0; }
+}
+.card{
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  background-size:200% 100%;
+  animation: panelShimmer 12s linear infinite;
+}
+
+/* Boxed primary button with light sweep */
+.btn-primary{
+  border:1px solid var(--gold);
+  background: rgba(212,175,55,.06);
+  box-shadow:0 0 0 1px rgba(255,255,255,.05), 0 8px 30px rgba(0,0,0,.45);
+  transition: transform .12s ease, box-shadow .2s ease;
+  position:relative; overflow:hidden; border-radius:12px;
+}
+.btn-primary:active{ transform: translateY(1px) scale(.99); }
+.btn-primary::after{
+  content:""; position:absolute; inset:0;
+  background: radial-gradient(120% 50% at -10% 50%, rgba(255,255,255,.14), transparent 60%);
+  transform: translateX(-100%); transition: transform .35s ease;
+}
+.btn-primary:hover::after{ transform: translateX(0); }
+
+/* Risk dial “breath” */
+@keyframes riskPulse{ 
+  0%,100%{ box-shadow:0 0 0 0 var(--glow); }
+  50%{ box-shadow:0 0 22px 0 var(--glow); }
+}
+.riskDial{ animation: riskPulse 4s ease-in-out infinite; }
+
+/* P/L colors */
+.text-pos{ color:#30E07B; }
+.text-neg{ color:#FF5A66; }
+
+/* Brand tint */
+.brand-dot{ width:24px;height:24px;border-radius:6px;background:var(--brand,#B3B3B3); }
+
+/* Reduced motion (system + manual) */
+@media (prefers-reduced-motion: reduce){ .card{ animation:none; } }
+html.rm .card{ animation:none; }
