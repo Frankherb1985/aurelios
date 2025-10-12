@@ -1,176 +1,124 @@
-/* AureliOS — Frank Herbert Edition */
-/* Black • Chrome • Gold Interface with subtle motion */
+/* ===============================
+   AureliOS — Frank Herbert Edition
+   Black / Gold / Chrome + Interactions
+   =============================== */
 
-:root {
-  --bg: #0b0b0b;
-  --chrome: #2a2a2a;
-  --gold: #d4af37;
-  --text: #f2f2f2;
-  --muted: #777;
-  --green: #30e07b;
-  --red: #ff5a66;
-  --radius: 14px;
-  --glow: 0 0 15px rgba(212,175,55,0.4);
+:root{
+  --bg:#0a0a0a; --card:#121212; --stroke:#252525;
+  --gold:#ffcc48; --gold-2:#e7b73a; --chrome:#9aa0a6;
+  --muted:#9b8e6b; --pos:#25d366; --neg:#ff4d4f;
+  --panel:#0f0f0f; --ring:#1a1a1a;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-  margin: 0; padding: 0;
-  background: var(--bg);
-  color: var(--text);
-  overflow-x: hidden;
-  transition: background 0.3s;
+*{box-sizing:border-box;}
+html,body{height:100%}
+
+body.theme-dark{
+  margin:0; color:#ececec;
+  font:500 16px/1.45 ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background:
+    radial-gradient(1200px 650px at 50% -20%, #131313 10%, #0a0a0a 58%, #070707 100%),
+    #0a0a0a;
 }
 
-.app-header {
-  text-align: center;
-  padding: 20px 10px;
-  background: linear-gradient(180deg, #111 0%, #000 100%);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+/* ===== Header ===== */
+.app-header{
+  padding:20px 16px 8px;
+  background: linear-gradient(180deg, rgba(255,204,72,.06), rgba(0,0,0,0));
+  border-bottom:1px solid #1b1b1b;
 }
-.app-title {
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--gold);
-}
-.author {
-  color: var(--muted);
-  font-size: 0.9rem;
-  margin-bottom: 8px;
-}
-.balances div {
-  font-size: 0.9rem;
-}
-.muted { color: var(--muted); }
+.app-title{font:800 30px/1.2 ui-sans-serif; color:var(--gold); letter-spacing:.3px}
+.app-sub{margin-top:2px; color:var(--chrome); font:600 14px/1}
 
-main {
-  padding: 15px;
-}
+/* ===== Balances ===== */
+.balances{margin-top:10px}
+.balances .muted{color:var(--muted); opacity:.8}
 
-.card {
-  background: var(--chrome);
-  border-radius: var(--radius);
-  box-shadow: 0 0 20px rgba(212,175,55,0.05);
-  padding: 15px;
-  margin-bottom: 20px;
-  transition: all 0.3s ease;
+/* ===== Views & Cards ===== */
+.view{padding:12px 12px 96px}
+.card{
+  background: linear-gradient(180deg,#121212,#0f0f0f);
+  border:1px solid #222;
+  border-radius:18px; padding:14px; margin:12px 0;
+  box-shadow:0 0 0 1px rgba(255,204,72,.045), 0 10px 40px rgba(0,0,0,.4);
+  transition:.25s ease;
 }
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--glow);
-}
-h2 { color: var(--gold); margin-top: 0; }
+.card:hover{transform:translateY(-1px); box-shadow:0 0 0 1px rgba(255,204,72,.08), 0 14px 56px rgba(0,0,0,.55)}
+.card h2{font:800 20px/1.1 ui-sans-serif; color:var(--gold); margin:4px 0 10px}
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  color: var(--text);
-  font-size: 0.9rem;
-}
-.table th {
-  text-align: left;
-  color: var(--gold);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  padding: 4px 0;
-}
-.table td {
-  padding: 4px 0;
-}
-.text-pos { color: var(--green); }
-.text-neg { color: var(--red); }
+.card-head{display:flex; align-items:center; justify-content:space-between; gap:12px}
 
-.btn {
-  display: inline-block;
-  width: 100%;
-  padding: 12px;
-  border-radius: var(--radius);
-  background: none;
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  font-weight: 500;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.2s ease;
+/* ===== Risk Gauge ===== */
+.risk{display:flex; align-items:center; gap:10px}
+.risk-gauge{
+  width:58px; height:58px; border-radius:50%;
+  background:conic-gradient(var(--gold) 0deg, var(--gold) var(--risk-deg,210deg), #2a2a2a var(--risk-deg,210deg));
+  box-shadow: inset 0 0 0 6px #0c0c0c, 0 0 16px rgba(255,204,72,.25);
 }
-.btn.primary {
-  background: var(--gold);
-  color: #000;
-  border: none;
-}
-.btn.primary:hover {
-  box-shadow: var(--glow);
-  transform: scale(1.02);
-}
-.btn.outline:hover {
-  background: rgba(212,175,55,0.1);
-}
+.risk-label{font:700 12px/1 ui-sans-serif; color:var(--chrome)}
 
-.btn.danger {
-  background: var(--red);
-  color: #fff;
+/* ===== Table ===== */
+.table{width:100%; border-collapse:collapse}
+.table th,.table td{padding:8px 6px; border-bottom:1px solid #1f1f1f}
+.table th{color:#d8bb62; text-align:left}
+.table td{color:#efe6cb}
+
+/* ===== Stats Bar ===== */
+.stats-row{display:flex; justify-content:space-between; color:#cdb063; font-weight:700; padding:6px 2px 0}
+
+/* ===== Forms ===== */
+.form label{display:block; color:#d7c892; font-weight:700; margin:6px 0 4px}
+.form input,.form select,textarea{
+  width:100%; background:#0b0b0b; color:#eee;
+  border:1px solid #2a2a2a; border-radius:14px; padding:12px 12px; transition:.2s ease;
+}
+.form input:focus,.form select:focus,textarea:focus{
+  border-color:var(--gold); outline:0; box-shadow:0 0 10px rgba(255,204,72,.3)
+}
+.row{display:flex; gap:10px}
+.row>*{flex:1}
+
+/* ===== Buttons ===== */
+.btn{
+  appearance:none; border:1px solid #2a2a2a; background:#121212; color:#ddd;
+  padding:12px 14px; border-radius:14px; font:800 16px/1 ui-sans-serif;
+  transition:.2s ease; position:relative; overflow:hidden;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(180deg,#ffdb77,#f0c24c); color:#1a1202; border-color:#e0b54a}
+.btn.primary.glow{
+  box-shadow:0 0 0 1px rgba(255,204,72,.15), 0 6px 20px rgba(255,204,72,.25), inset 0 -8px 18px rgba(0,0,0,.25);
+  animation:shimmer 3.6s ease-in-out infinite;
+}
+.btn.outline{background:transparent; color:#d8c89a; border-color:#3a3218}
+.btn.danger{border-color:#3a1c1c; color:#ffb0b0}
+
+/* Ripple (Star-Trek-ish) */
+.btn::after{
+  content:""; position:absolute; inset:0; background:radial-gradient(120px 80px at var(--rx,50%) var(--ry,50%), rgba(255,204,72,.25), transparent 60%);
+  opacity:0; transition:.35s ease;
+}
+.btn.is-pressed::after{opacity:1}
+@keyframes shimmer{
+  0%,100%{filter:drop-shadow(0 0 0 rgba(255,204,72,0))}
+  40%{filter:drop-shadow(0 0 10px rgba(255,204,72,.35))}
 }
 
-.tabbar {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  display: flex;
-  background: rgba(20,20,20,0.9);
-  border-top: 1px solid rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
+/* ===== Tab Bar ===== */
+.tabbar{
+  position:fixed; left:0; right:0; bottom:0; display:flex; justify-content:space-around; gap:12px;
+  padding:10px 12px; backdrop-filter:saturate(120%) blur(16px);
+  background:rgba(10,10,10,.78); border-top:1px solid #242424;
 }
-.tabbar button {
-  flex: 1;
-  padding: 10px;
-  color: var(--muted);
-  background: none;
-  border: none;
-  font-weight: 500;
-}
-.tabbar button.active {
-  color: var(--gold);
-  border-top: 2px solid var(--gold);
-}
+.tabbar button{background:transparent; border:0; color:#c1c1c1; font-weight:800; padding:8px 14px; border-radius:12px; transition:.25s}
+.tabbar button.active{color:var(--gold); background:rgba(255,204,72,.08)}
 
-/* Smooth shimmering pulse */
-@keyframes shimmer {
-  0% { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
-}
-.shimmer {
-  background: linear-gradient(120deg, rgba(212,175,55,0.05) 25%, rgba(212,175,55,0.15) 50%, rgba(212,175,55,0.05) 75%);
-  background-size: 400% 100%;
-  animation: shimmer 8s linear infinite;
-}
+/* ===== Watchlist colors (if/when you add) ===== */
+.pos{color:var(--pos)} .neg{color:var(--neg)}
+.ticker-AAPL{color:#2ba3ff} .ticker-TSLA{color:#d84b33}
+.ticker-NVDA{color:#80e36a} .ticker-MSFT{color:#b6c6ff}
 
-/* HUD panel */
-.hud {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  font-size: 0.9rem;
-  color: var(--gold);
-}
-
-/* Form tweaks */
-input, select, textarea {
-  width: 100%;
-  background: #111;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: var(--radius);
-  padding: 10px;
-  color: var(--text);
-  font-size: 1rem;
-  margin-top: 4px;
-  margin-bottom: 10px;
-}
-input:focus, textarea:focus {
-  outline: none;
-  border-color: var(--gold);
-  box-shadow: var(--glow);
-}
-
-/* Star-Trek button pulse */
-.btn.primary:active {
-  box-shadow: 0 0 30px 4px rgba(212,175,55,0.5);
-  transform: scale(0.97);
+/* ===== Compact on small screens ===== */
+@media (max-width:380px){
+  .card{border-radius:16px; padding:12px}
 }
