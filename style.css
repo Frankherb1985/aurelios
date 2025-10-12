@@ -195,3 +195,67 @@ body.theme-dark{ background:var(--bg); color:var(--chrome); -webkit-font-smoothi
 /* Reduced motion (system + manual) */
 @media (prefers-reduced-motion: reduce){ .card{ animation:none; } }
 html.rm .card{ animation:none; }
+/* ===== AureliOS — Frank Herbert: Compact Black/Chrome/Gold skin ===== */
+:root{
+  --bg:#0B0B0B; --ink:#f5f6fa; --muted:#9aa3b5;
+  --gold:#D4AF37; --chrome:#B3B3B3;
+  --glow: rgba(212,175,55,.25);
+}
+
+/* Cards: subtle continuous shimmer (very low-contrast) */
+@keyframes panelShimmer { 
+  0% { background-position:-200% 0; }
+  100%{ background-position: 200% 0; }
+}
+.card{
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.045), rgba(255,255,255,0.02));
+  background-size:200% 100%;
+  animation: panelShimmer 12s linear infinite;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;
+}
+
+/* HUD & Risk Dial */
+.riskDial{
+  color:var(--ink);
+  background: rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;
+  padding:8px 12px;
+}
+@keyframes riskPulse{ 
+  0%,100%{ box-shadow:0 0 0 0 var(--glow); }
+  50%{ box-shadow:0 0 22px 0 var(--glow); }
+}
+.riskDial{ animation: riskPulse 4s ease-in-out infinite; }
+
+/* Watchlist: brand tint + pos/neg colors */
+.brand-dot{ width:22px;height:22px;border-radius:6px;background:var(--brand,#B3B3B3); }
+.text-pos{ color:#30E07B; }
+.text-neg{ color:#FF5A66; }
+#watchlist .row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 8px; border-radius:10px; gap:10px;
+}
+#watchlist .row:hover{ background: rgba(255,255,255,.035); }
+
+/* Boxed gold primary button with sweep */
+.btn-primary{
+  border:1px solid var(--gold);
+  background: rgba(212,175,55,.06);
+  color:var(--ink);
+  box-shadow:0 0 0 1px rgba(255,255,255,.05), 0 8px 30px rgba(0,0,0,.45);
+  transition: transform .12s ease, box-shadow .2s ease;
+  position:relative; overflow:hidden; border-radius:12px;
+}
+.btn-primary:active{ transform: translateY(1px) scale(.99); }
+.btn-primary::after{
+  content:""; position:absolute; inset:0;
+  background: radial-gradient(120% 50% at -10% 50%, rgba(255,255,255,.14), transparent 60%);
+  transform: translateX(-100%); transition: transform .35s ease;
+}
+.btn-primary:hover::after{ transform: translateX(0); }
+
+/* Reduced motion (system + manual toggle) */
+@media (prefers-reduced-motion: reduce){ .card{ animation:none; } }
+html.rm .card{ animation:none; }
