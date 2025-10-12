@@ -1,11 +1,31 @@
 {
   "name": "AureliOS",
   "short_name": "AureliOS",
-  "start_url": ".",
+  "description": "AureliOS — Gold-Black Trading Dashboard by Frank Herbert",
+  "start_url": "./?source=pwa",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "orientation": "portrait",
+  "background_color": "#0a0a0a",
+  "theme_color": "#ffcc48",
+  "lang": "en-US",
+  "categories": ["finance", "productivity", "tools"],
   "icons": [
+    {
+      "src": "icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
     {
       "src": "icons/icon-192.png",
       "sizes": "192x192",
@@ -14,7 +34,9 @@
     {
       "src": "icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable any"
     }
-  ]
+  ],
+  "prefer_related_applications": false
 }
