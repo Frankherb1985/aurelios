@@ -16,3 +16,6 @@ self.addEventListener('install', e=>{
 self.addEventListener('fetch', e=>{
   e.respondWith(caches.match(e.request).then(r=> r || fetch(e.request)))
 })
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw-v2.js', { scope: './' });
+}
