@@ -3,23 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AureliOS — Frank Herbert</title>
+  <title>AureliOS</title>
   <link rel="manifest" href="manifest.json" />
-<link rel="stylesheet" href="style.20251013.css?v=1" />
-<style>
-/* TEMP: cache-buster visual proof */
-.app-header { 
-  background: linear-gradient(135deg, #111 0%, #000 40%, rgba(212,175,55,.15) 100%) !important;
-  border-bottom: 2px solid rgba(212,175,55,.35) !important;
-}
-.app-title { color: #d4af37 !important; letter-spacing: .5px !important; }
-</style>
+  <link rel="stylesheet" href="style.css?v=2025-10-13b" />
 </head>
-
 <body class="theme-dark">
   <header class="app-header">
     <div class="app-title">AureliOS</div>
-    <div class="author">Frank Herbert</div>
+    <div class="app-sub">Frank Herbert</div>
     <div class="balances">
       <div>Equity — <span data-role="equity">$10,000.00</span></div>
       <div class="muted">Cash — <span data-role="cash">$10,000.00</span></div>
@@ -29,56 +20,60 @@
   <main>
     <!-- DASHBOARD -->
     <section id="view-dashboard" class="view active">
-      <div class="card shimmer">
-        <h2>Recent Trades</h2>
-        <table class="table" data-role="recent-trades">
-          <thead>
-            <tr>
-              <th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th>
-              <th>Price</th><th>Position $</th><th>PnL</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-
-      <div class="hud">
-        <div id="hudPnl">Δ +0.00</div>
-        <div id="hudWr">WR 0%</div>
-        <div id="hudStreak">Streak 0</div>
-      </div>
-    </section>
-
-    <!-- TRADE -->
-    <section id="view-trade" class="view">
       <div class="card">
-        <h2>Trade</h2>
+        <div class="card-head">
+          <h2>Watchlist</h2>
+          <div class="risk">
+            <div class="risk-gauge" id="riskGauge"></div>
+            <div class="risk-label">Risk</div>
+          </div>
+        </div>
+
+        <ul class="watchlist" id="watchlist">
+          <!-- filled by app.js -->
+        </ul>
+
+        <div class="stats-row">
+          <div><span id="deltaDay" class="pos">+0.00</span></div>
+          <div>WR <span id="winRate">0%</span></div>
+          <div>Streak <span id="streak">0</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Quick Trade</h2>
         <form data-role="trade-form" class="form">
           <label>Symbol
-            <input name="symbol" placeholder="AAPL" value="AAPL" />
+            <input name="symbol" id="sym" placeholder="AAPL" value="AAPL" />
           </label>
           <div class="row">
-            <label>Qty
-              <input name="qty" type="number" placeholder="10" inputmode="numeric" />
+            <label>Shares
+              <input name="qty" id="qty" type="number" placeholder="10" inputmode="numeric" />
             </label>
             <label>Price
-              <input name="price" type="number" placeholder="150" inputmode="decimal" />
+              <input name="price" id="price" type="number" placeholder="150" inputmode="decimal" />
             </label>
           </div>
-          <label>Action
-            <select name="action">
-              <option>Buy</option>
-              <option>Sell</option>
-            </select>
-          </label>
-          <button type="submit" class="btn primary">Submit</button>
+          <div class="row">
+            <label>Action
+              <select name="action" id="mode">
+                <option value="buy">Buy</option>
+                <option value="sell">Sell</option>
+              </select>
+            </label>
+            <button type="submit" class="btn primary glow">Review</button>
+          </div>
         </form>
       </div>
 
       <div class="card">
-        <h2>Notes</h2>
-        <textarea data-role="notes-text" placeholder="Strategy notes..." rows="5"></textarea>
-        <button type="button" class="btn outline" data-role="notes-save">Save</button>
+        <h2>Recent Trades</h2>
+        <table class="table" data-role="recent-trades">
+          <thead>
+            <tr><th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Position $</th><th>PnL</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
     </section>
 
@@ -97,18 +92,23 @@
             <input type="number" data-role="pol-position" />
           </label>
         </div>
-        <button class="btn" data-action="save-policy">Save Policy</button>
-        <button class="btn danger" data-action="reset-cash">Reset Cash</button>
+        <button class="btn" data-role="save-policy">Save Policy</button>
+        <button class="btn danger" data-role="reset-cash">Reset Cash</button>
+      </div>
+
+      <div class="card">
+        <h2>Notes</h2>
+        <textarea data-role="notes-text" placeholder="Strategy notes..." rows="5"></textarea>
+        <button type="button" class="btn outline" data-role="notes-save">Save</button>
       </div>
     </section>
   </main>
 
   <nav class="tabbar">
     <button data-tab="dashboard" class="active">Dashboard</button>
-    <button data-tab="trade">Trade</button>
     <button data-tab="settings">Settings</button>
   </nav>
 
-  <script src="app.20251013.js?v=1"></script>
+  <script src="app.js?v=2025-10-13b"></script>
 </body>
 </html>
