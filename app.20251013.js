@@ -176,5 +176,13 @@ function animate(){
   requestAnimationFrame(animate);
 }
 animate();
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(list =>
+    Promise.all(list.map(r => r.unregister())).then(() => {
+      caches && caches.keys && caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+      console.log('SW & caches cleared. Reloading…'); location.reload();
+    })
+  );
+}
 
 // ===== End of AureliOS App.js =====
