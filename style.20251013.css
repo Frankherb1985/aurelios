@@ -1,2 +1,176 @@
-/* Contents copied from style.css */
- /* You can replace this comment with the actual content of style.css */
+/* AureliOS — Frank Herbert Edition */
+/* Black • Chrome • Gold Interface with subtle motion */
+
+:root {
+  --bg: #0b0b0b;
+  --chrome: #2a2a2a;
+  --gold: #d4af37;
+  --text: #f2f2f2;
+  --muted: #777;
+  --green: #30e07b;
+  --red: #ff5a66;
+  --radius: 14px;
+  --glow: 0 0 15px rgba(212,175,55,0.4);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  transition: background 0.3s;
+}
+
+.app-header {
+  text-align: center;
+  padding: 20px 10px;
+  background: linear-gradient(180deg, #111 0%, #000 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.app-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+.author {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+.balances div {
+  font-size: 0.9rem;
+}
+.muted { color: var(--muted); }
+
+main {
+  padding: 15px;
+}
+
+.card {
+  background: var(--chrome);
+  border-radius: var(--radius);
+  box-shadow: 0 0 20px rgba(212,175,55,0.05);
+  padding: 15px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow);
+}
+h2 { color: var(--gold); margin-top: 0; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+.table th {
+  text-align: left;
+  color: var(--gold);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 4px 0;
+}
+.table td {
+  padding: 4px 0;
+}
+.text-pos { color: var(--green); }
+.text-neg { color: var(--red); }
+
+.btn {
+  display: inline-block;
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: none;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.btn.primary {
+  background: var(--gold);
+  color: #000;
+  border: none;
+}
+.btn.primary:hover {
+  box-shadow: var(--glow);
+  transform: scale(1.02);
+}
+.btn.outline:hover {
+  background: rgba(212,175,55,0.1);
+}
+
+.btn.danger {
+  background: var(--red);
+  color: #fff;
+}
+
+.tabbar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  background: rgba(20,20,20,0.9);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+}
+.tabbar button {
+  flex: 1;
+  padding: 10px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  font-weight: 500;
+}
+.tabbar button.active {
+  color: var(--gold);
+  border-top: 2px solid var(--gold);
+}
+
+/* Smooth shimmering pulse */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.shimmer {
+  background: linear-gradient(120deg, rgba(212,175,55,0.05) 25%, rgba(212,175,55,0.15) 50%, rgba(212,175,55,0.05) 75%);
+  background-size: 400% 100%;
+  animation: shimmer 8s linear infinite;
+}
+
+/* HUD panel */
+.hud {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--gold);
+}
+
+/* Form tweaks */
+input, select, textarea {
+  width: 100%;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  padding: 10px;
+  color: var(--text);
+  font-size: 1rem;
+  margin-top: 4px;
+  margin-bottom: 10px;
+}
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: var(--glow);
+}
+
+/* Star-Trek button pulse */
+.btn.primary:active {
+  box-shadow: 0 0 30px 4px rgba(212,175,55,0.5);
+  transform: scale(0.97);
+}
