@@ -1,189 +1,180 @@
-// AureliOS — Single Page logic (Dashboard / Trade / Settings)
+// ===================================================
+// AureliOS DayTrade App.js — Frank Herbert Edition
+// Black • Chrome • Gold Interface
+// Streamlined, animated, mobile-ready
+// ===================================================
 
-const DEFAULT_POLICY = {
-  maxRiskPerTradeUSD: 150,
-  maxDailyLossUSD: 400,
-  maxPositionUSD: 3000
+// ===== Helpers =====
+const $  = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const ref = id => document.getElementById(id);
+const setText = (el,val)=>{ if(el) el.textContent = val; };
+
+// ===== State =====
+let state = {
+  equity: 10000,
+  cash: 10000,
+  trades: [],
+  policy: { risk: 150, daily: 400, position: 3000 }
 };
-const STARTING_CASH = 10000;
 
-// ------- LocalStorage Keys -------
-const LS_TRADES = "aurelios_trades_v1";
-const LS_NOTES  = "aurelios_notes_v1";
-const LS_CASH   = "aurelios_cash_v1";
-const LS_POL    = "aurelios_policy_v1";
-
-// ------- Storage Helpers -------
-const loadJSON = (k, d) => {
-  try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch { return d; }
+// ===== UI / Styling =====
+const BRAND = {
+  AAPL:'#0A84FF', TSLA:'#CC0000', NVDA:'#76B900', MSFT:'#737373',
+  META:'#0866FF', AMZN:'#FF9900', GOOG:'#4285F4'
 };
-const saveJSON = (k, v) => localStorage.setItem(k, JSON.stringify(v));
-const loadTrades = () => loadJSON(LS_TRADES, []);
-const saveTrades = (t) => saveJSON(LS_TRADES, t);
-const loadPolicy = () => loadJSON(LS_POL, DEFAULT_POLICY);
-const savePolicy = (p) => saveJSON(LS_POL, p);
-const loadCash = () => {
-  const v = Number(localStorage.getItem(LS_CASH));
-  return Number.isFinite(v) ? v : STARTING_CASH;
-};
-const saveCash = (n) => localStorage.setItem(LS_CASH, String(n));
-const todayStr = () => new Date().toISOString().slice(0,10);
+const brandColor = sym => BRAND[(sym||'').toUpperCase()] || '#B3B3B3';
 
-// ------- UI Helpers -------
-const $ = (sel) => document.querySelector(sel);
-function currency(n){ return `$${Number(n).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2})}`; }
-
-function refreshHeader(){
-  const cash = loadCash();
-  const equity = cash;
-  const eqEl = document.querySelector('[data-role="equity"]');
-  const cashEl = document.querySelector('[data-role="cash"]');
-  if (eqEl) eqEl.textContent = currency(equity);
-  if (cashEl) cashEl.textContent = currency(cash);
+// ===== Core Functions =====
+function updateBalances(){
+  setText($('[data-role="equity"]'), `$${state.equity.toFixed(2)}`);
+  setText($('[data-role="cash"]'), `$${state.cash.toFixed(2)}`);
 }
 
-function renderRecent(limit=10){
-  const tbody = document.querySelector('[data-role="recent-trades"] tbody');
-  if (!tbody) return;
-  tbody.innerHTML = "";
-  const trades = loadTrades().slice(-limit).reverse();
-  for (const t of trades){
-    const tr = document.createElement('tr');
-    const cells = [
-      t.date.replace('T',' ').slice(0,19),
-      t.symbol, t.action, t.qty,
-      currency(t.price),
-      currency(t.positionUSD),
-      currency(t.pnl)
-    ];
-    cells.forEach(v=>{ const td=document.createElement('td'); td.textContent=v; tr.appendChild(td); });
-    tbody.appendChild(tr);
-  }
-}
-
-function dailyLossSum(trades){
-  return trades
-    .filter(t => t.date.startsWith(todayStr()))
-    .reduce((sum, t) => sum + (t.pnl < 0 ? -t.pnl : 0), 0);
-}
-
-function wireTradeForm(){
-  const form = document.querySelector('[data-role="trade-form"]');
-  if (!form) return;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const policy = loadPolicy();
-
-    const symbol = (form.querySelector('[name="symbol"]').value || "").trim().toUpperCase();
-    const qty    = Number(form.querySelector('[name="qty"]').value || 0);
-    const price  = Number(form.querySelector('[name="price"]').value || 0);
-    const action = (form.querySelector('[name="action"]').value || "Buy").toUpperCase();
-
-    if (!symbol || qty <= 0 || price <= 0){
-      alert("Enter symbol, qty > 0, price > 0.");
-      return;
-    }
-
-    const positionUSD = qty * price;
-    if (positionUSD > policy.maxPositionUSD){
-      alert(`❌ Blocked: position ${currency(positionUSD)} exceeds max ${currency(policy.maxPositionUSD)}`);
-      return;
-    }
-    const trades = loadTrades();
-    const dLoss = dailyLossSum(trades);
-    if (dLoss >= policy.maxDailyLossUSD){
-      alert(`❌ Blocked: daily loss limit reached (${currency(policy.maxDailyLossUSD)})`);
-      return;
-    }
-
-    let cash = loadCash();
-    if (action === "BUY")   cash -= positionUSD;
-    if (action === "SELL")  cash += positionUSD;
-    saveCash(cash);
-
-    const rec = {
-      id: crypto.randomUUID(),
-      date: new Date().toISOString(),
-      symbol, qty, price, action,
-      positionUSD, pnl: 0, noteTag: ""
-    };
-    trades.push(rec);
-    saveTrades(trades);
-
-    alert(`✅ ${action} ${qty} ${symbol} @ ${currency(price)} logged`);
-    refreshHeader();
-    renderRecent(10);
-    form.reset();
+function addTrade(symbol, side, qty, price){
+  const pos = qty * price * (side==="Buy" ? -1 : 1);
+  state.trades.push({
+    time: new Date().toLocaleTimeString(),
+    symbol, side, qty, price, pos, pnl: (Math.random()-0.5)*50
   });
+  renderTrades();
+  renderWatchlist(buildWatchlistFromRecent());
+  updateHUD();
 }
 
-function wireNotes(){
-  const notesArea = document.querySelector('[data-role="notes-text"]');
-  const saveBtn   = document.querySelector('[data-role="notes-save"]');
-  if (!notesArea || !saveBtn) return;
-  notesArea.value = localStorage.getItem(LS_NOTES) || "";
-  saveBtn.addEventListener('click', () => {
-    localStorage.setItem(LS_NOTES, notesArea.value || "");
-    alert("📝 Notes saved");
-  });
+function renderTrades(){
+  const tbody = $('[data-role="recent-trades"] tbody');
+  if(!tbody) return;
+  tbody.innerHTML = state.trades.slice(-5).reverse().map(t => `
+    <tr>
+      <td>${t.time}</td>
+      <td>${t.symbol}</td>
+      <td>${t.side}</td>
+      <td>${t.qty}</td>
+      <td>${t.price.toFixed(2)}</td>
+      <td>$${t.pos.toFixed(2)}</td>
+      <td class="${t.pnl>=0?'text-pos':'text-neg'}">
+        ${t.pnl>=0?'+':''}${t.pnl.toFixed(2)}
+      </td>
+    </tr>
+  `).join('');
 }
 
-function wireSettings(){
-  const pol = loadPolicy();
-  const r = document.querySelector('[data-role="pol-risk"]');
-  const d = document.querySelector('[data-role="pol-daily"]');
-  const p = document.querySelector('[data-role="pol-position"]');
-  const save = document.querySelector('[data-role="save-policy"]');
-  const reset = document.querySelector('[data-role="reset-cash"]');
-  if (r) r.value = pol.maxRiskPerTradeUSD;
-  if (d) d.value = pol.maxDailyLossUSD;
-  if (p) p.value = pol.maxPositionUSD;
+// ===== Risk Dial & HUD =====
+function setRisk(pct){
+  setText(ref('riskVal'), `${pct|0}%`);
+}
 
-  save?.addEventListener('click', () => {
-    const np = {
-      maxRiskPerTradeUSD: Number(r.value || 0),
-      maxDailyLossUSD: Number(d.value || 0),
-      maxPositionUSD: Number(p.value || 0)
-    };
-    savePolicy(np);
-    alert("✅ Policy saved");
-  });
+function updateHUD(){
+  const pnl = state.trades.reduce((a,b)=>a+b.pnl,0);
+  const wr  = state.trades.length ? 
+    (state.trades.filter(t=>t.pnl>0).length/state.trades.length*100).toFixed(0) : 0;
+  const streak = Math.floor(Math.random()*5);
+  setText(ref('hudPnl'), `Δ ${pnl>=0?'+':''}${pnl.toFixed(2)}`);
+  ref('hudPnl').style.color = pnl>=0 ? '#30E07B' : '#FF5A66';
+  setText(ref('hudWr'), `WR ${wr}%`);
+  setText(ref('hudStreak'), `Streak ${streak}`);
+}
 
-  reset?.addEventListener('click', () => {
-    if (confirm("Reset cash to starting balance?")) {
-      saveCash(STARTING_CASH);
-      refreshHeader();
-      alert("💰 Cash reset");
+// ===== Watchlist =====
+function renderWatchlist(rows){
+  const el = ref('watchlist');
+  if(!el) return;
+  el.innerHTML = (rows||[]).map(r=>{
+    const pos = r.changePct >= 0;
+    return `
+      <div class="row" style="--brand:${brandColor(r.sym)}">
+        <div class="brand-dot"></div>
+        <div class="ticker" style="min-width:56px">${r.sym}</div>
+        <div class="right" style="text-align:right">
+          <div class="last">${r.last.toFixed(2)}</div>
+          <div class="${pos?'text-pos':'text-neg'} small">
+            ${pos?'+':''}${r.changePct.toFixed(2)}%
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function buildWatchlistFromRecent(max=5){
+  const seen = new Set(), out = [];
+  [...state.trades].reverse().forEach(tr=>{
+    if(out.length>=max) return;
+    if(!seen.has(tr.symbol)){
+      seen.add(tr.symbol);
+      out.push({ sym: tr.symbol, last: tr.price, changePct:(Math.random()*2-1)*3 });
     }
   });
+  return out;
 }
 
-function wireTabs(){
-  const buttons = document.querySelectorAll('nav.tabbar [data-tab]');
-  const views = {
-    dashboard: document.getElementById('view-dashboard'),
-    trade: document.getElementById('view-trade'),
-    settings: document.getElementById('view-settings')
-  };
-  const show = (key) => {
-    Object.values(views).forEach(v => v.classList.remove('active'));
-    buttons.forEach(b => b.classList.remove('active'));
-    views[key]?.classList.add('active');
-    document.querySelector(`nav [data-tab="${key}"]`)?.classList.add('active');
-    if (key === 'dashboard') renderRecent(10);
-  };
-  buttons.forEach(btn => btn.addEventListener('click', () => show(btn.dataset.tab)));
-  show('dashboard');
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  if (localStorage.getItem(LS_CASH) === null) saveCash(STARTING_CASH);
-  if (localStorage.getItem(LS_POL)  === null) savePolicy(DEFAULT_POLICY);
-  refreshHeader();
-  renderRecent(10);
-  wireTradeForm();
-  wireNotes();
-  wireSettings();
-  wireTabs();
+// ===== Tabs =====
+$$('[data-tab]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    $$('.tabbar button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const view = btn.dataset.tab;
+    $$('.view').forEach(v=>v.classList.remove('active'));
+    $(`#view-${view}`).classList.add('active');
+  });
 });
+
+// ===== Event Delegation =====
+document.addEventListener('click', (e)=>{
+  const a = e.target.closest('[data-action], .btn.primary');
+  if(!a) return;
+  const action = a.dataset.action || '';
+
+  if(action === 'notes-save'){
+    const txt = $('[data-role="notes-text"]').value;
+    localStorage.setItem('AURELIOS_NOTES', txt);
+  }
+
+  if(action === 'save-policy'){
+    state.policy = {
+      risk: +$('[data-role="pol-risk"]').value || 150,
+      daily:+$('[data-role="pol-daily"]').value || 400,
+      position:+$('[data-role="pol-position"]').value || 3000
+    };
+    localStorage.setItem('AURELIOS_POLICY', JSON.stringify(state.policy));
+  }
+
+  if(action === 'reset-cash'){
+    state.cash = 10000; state.trades = [];
+    updateBalances(); renderTrades(); renderWatchlist([]);
+  }
+});
+
+// ===== Trade Form =====
+$('[data-role="trade-form"]').addEventListener('submit', e=>{
+  e.preventDefault();
+  const f = e.target;
+  const symbol = f.symbol.value.toUpperCase();
+  const qty = +f.qty.value || 0;
+  const price = +f.price.value || 0;
+  const side = f.action.value;
+  if(!symbol || !qty || !price) return;
+  addTrade(symbol, side, qty, price);
+  f.reset();
+});
+
+// ===== Init =====
+function init(){
+  updateBalances();
+  renderTrades();
+  renderWatchlist(buildWatchlistFromRecent());
+  setRisk(0);
+  updateHUD();
+}
+init();
+
+// ===== Animation Loop (Star-Trek style motion) =====
+let phase = 0;
+function animate(){
+  phase += 0.03;
+  document.documentElement.style.setProperty('--shimmer', Math.sin(phase).toFixed(3));
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ===== End of AureliOS App.js =====
