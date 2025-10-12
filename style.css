@@ -1,261 +1,176 @@
+/* AureliOS — Frank Herbert Edition */
+/* Black • Chrome • Gold Interface with subtle motion */
 
-:root{
-  --bg:#000;
-  --card:#1a1a1a;
-  --gold:#F3C63F;
-  --text:#fff;
-  --muted:#9b9b9b;
-  --green:#3adf82;
-  --red:#ea3a49;
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0; font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  background: radial-gradient(circle at 50% 30%, #0c0c0c, #000 60%);
-  color:var(--text);
-}
-#app{min-height:100%; display:flex; flex-direction:column; padding-bottom:64px}
-.header{
-  position:relative; margin:16px; padding:16px; border-radius:16px;
-  background:var(--card); border:1px solid rgba(243,198,63,.15);
-  overflow:hidden;
-}
-.header .shine{
-  position:absolute; inset:0;
-  background:linear-gradient(120deg, rgba(255,255,255,.12), rgba(255,255,255,.02) 50%, rgba(255,255,255,.15));
-  mix-blend-mode:screen; pointer-events:none;
-}
-.header h1{margin:0 0 6px 0; font-size:22px}
-.header p{margin:0; color:var(--text)}
-.header small{color:var(--muted)}
-
-.content{flex:1; padding:0 16px 8px}
-.card{
-  background:var(--card); border:1px solid rgba(243,198,63,.15);
-  border-radius:16px; padding:14px; margin-bottom:12px;
-}
-.empty{ text-align:center; color:var(--muted) }
-.row{display:flex; gap:12px}
-.col{flex:1}
-label{display:block; font-size:12px; color:var(--muted); margin-bottom:4px}
-input, select, textarea{
-  width:100%; padding:12px; border-radius:12px; border:none; outline:none;
-  background:#121212; color:#fff; border:1px solid #2a2a2a;
-}
-textarea{resize:vertical}
-button{
-  width:100%; padding:12px; border-radius:12px; border:none; margin-top:10px; font-weight:600;
-}
-button.gold{background:var(--gold); color:#000}
-button.outline{background:transparent; color:var(--gold); border:1px solid rgba(243,198,63,.6)}
-
-.tabs{
-  position:fixed; left:0; right:0; bottom:0; display:flex; gap:1px;
-  background:#0b0b0b; border-top:1px solid #202020
-}
-.tabs button{
-  flex:1; background:#0f0f0f; color:#bdbdbd; padding:12px; border-radius:0; border:none;
-}
-.tabs button.active{ color:var(--gold); background:#0a0a0a; font-weight:700 }
-.tab{ display:none } .tab.active{ display:block }
-
-.pos{
-  display:flex; justify-content:space-between; align-items:center; padding:10px;
-  border-radius:12px; background:#121212; border:1px solid #262626; margin-bottom:8px;
-}
-.pos .sym{font-weight:700}
-.pos .meta{color:var(--muted); font-size:12px}
-.pnlG{color:var(--green)} .pnlR{color:var(--red)}
-.msg{margin-top:8px; font-size:12px}
-.spark { display:block }
-/* === AureliOS Dark Theme — add at end of style.css === */
-:root{
-  --gold:#d4af37;
-  --chrome:#e7e7e7;
-  --bg:#0b0b0c;
-  --card:#111;
-  --line:#2a2a2a;
-  --muted:#9a9a9a;
+:root {
+  --bg: #0b0b0b;
+  --chrome: #2a2a2a;
+  --gold: #d4af37;
+  --text: #f2f2f2;
+  --muted: #777;
+  --green: #30e07b;
+  --red: #ff5a66;
+  --radius: 14px;
+  --glow: 0 0 15px rgba(212,175,55,0.4);
 }
 
-body.theme-dark{ background:var(--bg); color:var(--chrome); -webkit-font-smoothing:antialiased; }
-
-.app-header{ padding:16px; }
-.app-title{ font-size:24px; font-weight:700; color:#f5d97a; }
-.muted{ color:var(--muted); }
-
-.card{
-  background:var(--card);
-  border:1px solid #333;
-  border-radius:14px;
-  padding:16px;
-  margin:12px;
-  box-shadow:0 0 0 1px rgba(212,175,55,.05) inset;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  transition: background 0.3s;
 }
 
-.form label{ display:block; margin:10px 0 6px; font-size:14px; }
-.form input,.form select,.form textarea{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  background:#1a1a1b;
-  color:var(--chrome);
+.app-header {
+  text-align: center;
+  padding: 20px 10px;
+  background: linear-gradient(180deg, #111 0%, #000 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.app-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+.author {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+.balances div {
+  font-size: 0.9rem;
+}
+.muted { color: var(--muted); }
+
+main {
+  padding: 15px;
 }
 
-.row{ display:flex; gap:12px; }
-.row > label{ flex:1; }
+.card {
+  background: var(--chrome);
+  border-radius: var(--radius);
+  box-shadow: 0 0 20px rgba(212,175,55,0.05);
+  padding: 15px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow);
+}
+h2 { color: var(--gold); margin-top: 0; }
 
-.btn{
-  padding:12px 16px;
-  border-radius:12px;
-  border:1px solid #444;
-  background:#1a1a1b;
-  color:var(--chrome);
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text);
+  font-size: 0.9rem;
 }
-.btn.primary{
-  border-color:var(--gold);
-  background:var(--gold);
-  color:#111; font-weight:600;
+.table th {
+  text-align: left;
+  color: var(--gold);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 4px 0;
 }
-.btn.outline{
-  border-color:var(--gold);
-  background:transparent;
-  color:var(--gold);
+.table td {
+  padding: 4px 0;
 }
-.btn.danger{
-  border-color:#8b1e1e; color:#fff; background:#371314;
-}
+.text-pos { color: var(--green); }
+.text-neg { color: var(--red); }
 
-.table{ width:100%; border-collapse:collapse; }
-.table th,.table td{ padding:8px; border-bottom:1px solid var(--line); }
-.table th{ color:var(--gold); font-weight:600; }
-
-.view{ display:none; }
-.view.active{ display:block; }
-
-.tabbar{
-  position:fixed; left:0; right:0; bottom:0;
-  display:flex; justify-content:space-around; gap:8px;
-  padding:10px; background:#0f0f10; border-top:1px solid #222;
+.btn {
+  display: inline-block;
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: none;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
-.tabbar button{
-  flex:1; padding:10px 8px;
-  border-radius:10px; border:1px solid var(--line);
-  background:#161617; color:var(--chrome);
+.btn.primary {
+  background: var(--gold);
+  color: #000;
+  border: none;
 }
-.tabbar button.active{ border-color:var(--gold); color:var(--gold); }
-:root{
-  --gold:#D4AF37; --chrome:#B3B3B3; --bg:#0B0B0B;
-  --glow: rgba(212,175,55,.25);
+.btn.primary:hover {
+  box-shadow: var(--glow);
+  transform: scale(1.02);
 }
-
-/* Subtle, continuous panel shimmer */
-@keyframes panelShimmer { 
-  0% { background-position:-200% 0; }
-  100%{ background-position: 200% 0; }
-}
-.card{
-  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-  background-size:200% 100%;
-  animation: panelShimmer 12s linear infinite;
-}
-
-/* Boxed primary button with light sweep */
-.btn-primary{
-  border:1px solid var(--gold);
-  background: rgba(212,175,55,.06);
-  box-shadow:0 0 0 1px rgba(255,255,255,.05), 0 8px 30px rgba(0,0,0,.45);
-  transition: transform .12s ease, box-shadow .2s ease;
-  position:relative; overflow:hidden; border-radius:12px;
-}
-.btn-primary:active{ transform: translateY(1px) scale(.99); }
-.btn-primary::after{
-  content:""; position:absolute; inset:0;
-  background: radial-gradient(120% 50% at -10% 50%, rgba(255,255,255,.14), transparent 60%);
-  transform: translateX(-100%); transition: transform .35s ease;
-}
-.btn-primary:hover::after{ transform: translateX(0); }
-
-/* Risk dial “breath” */
-@keyframes riskPulse{ 
-  0%,100%{ box-shadow:0 0 0 0 var(--glow); }
-  50%{ box-shadow:0 0 22px 0 var(--glow); }
-}
-.riskDial{ animation: riskPulse 4s ease-in-out infinite; }
-
-/* P/L colors */
-.text-pos{ color:#30E07B; }
-.text-neg{ color:#FF5A66; }
-
-/* Brand tint */
-.brand-dot{ width:24px;height:24px;border-radius:6px;background:var(--brand,#B3B3B3); }
-
-/* Reduced motion (system + manual) */
-@media (prefers-reduced-motion: reduce){ .card{ animation:none; } }
-html.rm .card{ animation:none; }
-/* ===== AureliOS — Frank Herbert: Compact Black/Chrome/Gold skin ===== */
-:root{
-  --bg:#0B0B0B; --ink:#f5f6fa; --muted:#9aa3b5;
-  --gold:#D4AF37; --chrome:#B3B3B3;
-  --glow: rgba(212,175,55,.25);
+.btn.outline:hover {
+  background: rgba(212,175,55,0.1);
 }
 
-/* Cards: subtle continuous shimmer (very low-contrast) */
-@keyframes panelShimmer { 
-  0% { background-position:-200% 0; }
-  100%{ background-position: 200% 0; }
-}
-.card{
-  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.045), rgba(255,255,255,0.02));
-  background-size:200% 100%;
-  animation: panelShimmer 12s linear infinite;
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:12px;
+.btn.danger {
+  background: var(--red);
+  color: #fff;
 }
 
-/* HUD & Risk Dial */
-.riskDial{
-  color:var(--ink);
-  background: rgba(255,255,255,.03);
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:12px;
-  padding:8px 12px;
+.tabbar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  background: rgba(20,20,20,0.9);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
 }
-@keyframes riskPulse{ 
-  0%,100%{ box-shadow:0 0 0 0 var(--glow); }
-  50%{ box-shadow:0 0 22px 0 var(--glow); }
+.tabbar button {
+  flex: 1;
+  padding: 10px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  font-weight: 500;
 }
-.riskDial{ animation: riskPulse 4s ease-in-out infinite; }
+.tabbar button.active {
+  color: var(--gold);
+  border-top: 2px solid var(--gold);
+}
 
-/* Watchlist: brand tint + pos/neg colors */
-.brand-dot{ width:22px;height:22px;border-radius:6px;background:var(--brand,#B3B3B3); }
-.text-pos{ color:#30E07B; }
-.text-neg{ color:#FF5A66; }
-#watchlist .row{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:10px 8px; border-radius:10px; gap:10px;
+/* Smooth shimmering pulse */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
 }
-#watchlist .row:hover{ background: rgba(255,255,255,.035); }
+.shimmer {
+  background: linear-gradient(120deg, rgba(212,175,55,0.05) 25%, rgba(212,175,55,0.15) 50%, rgba(212,175,55,0.05) 75%);
+  background-size: 400% 100%;
+  animation: shimmer 8s linear infinite;
+}
 
-/* Boxed gold primary button with sweep */
-.btn-primary{
-  border:1px solid var(--gold);
-  background: rgba(212,175,55,.06);
-  color:var(--ink);
-  box-shadow:0 0 0 1px rgba(255,255,255,.05), 0 8px 30px rgba(0,0,0,.45);
-  transition: transform .12s ease, box-shadow .2s ease;
-  position:relative; overflow:hidden; border-radius:12px;
+/* HUD panel */
+.hud {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--gold);
 }
-.btn-primary:active{ transform: translateY(1px) scale(.99); }
-.btn-primary::after{
-  content:""; position:absolute; inset:0;
-  background: radial-gradient(120% 50% at -10% 50%, rgba(255,255,255,.14), transparent 60%);
-  transform: translateX(-100%); transition: transform .35s ease;
-}
-.btn-primary:hover::after{ transform: translateX(0); }
 
-/* Reduced motion (system + manual toggle) */
-@media (prefers-reduced-motion: reduce){ .card{ animation:none; } }
-html.rm .card{ animation:none; }
+/* Form tweaks */
+input, select, textarea {
+  width: 100%;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  padding: 10px;
+  color: var(--text);
+  font-size: 1rem;
+  margin-top: 4px;
+  margin-bottom: 10px;
+}
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: var(--glow);
+}
+
+/* Star-Trek button pulse */
+.btn.primary:active {
+  box-shadow: 0 0 30px 4px rgba(212,175,55,0.5);
+  transform: scale(0.97);
+}
