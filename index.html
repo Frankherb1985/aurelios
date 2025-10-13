@@ -1,20 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>AureliOS</title>
-  <meta name="theme-color" content="#0b0b0d" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <link rel="stylesheet" href="style.20251013.css?v=20251013-7" />
+  <meta name="theme-color" content="#0b0b0d"/>
+  <link rel="manifest" href="manifest.json?v=20251015"/>
+  <link rel="apple-touch-icon" href="icon-192.png"/>
+  <link rel="stylesheet" href="style.20251015.css"/>
 </head>
 <body class="theme-dark">
   <header class="app-header glass">
     <div>
       <div class="brand">AureliOS</div>
       <div class="byline">Frank Herbert</div>
-      <div class="muted">Build: <span id="buildTag">loading…</span></div>
+      <div class="muted tiny" data-role="build"></div>
     </div>
     <div class="balances">
       <div>Equity — <span data-role="equity">$10,000.00</span></div>
@@ -26,14 +26,20 @@
     <!-- DASHBOARD -->
     <section id="view-dashboard" class="view active">
       <div class="card">
-        <div class="card-title">
-          <h2>Recent Trades</h2>
-          <span class="pill" id="riskBadge">Risk 0%</span>
+        <div class="card-head">
+          <h2>Watchlist</h2>
+          <div class="chip" data-role="risk">Risk 0%</div>
         </div>
+        <table class="table" id="watchlist">
+          <thead><tr><th>Symbol</th><th>Price</th><th>Change</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Recent Trades</h2>
         <table class="table" data-role="recent-trades">
-          <thead>
-          <tr><th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Position $</th><th>PnL</th></tr>
-          </thead>
+          <thead><tr><th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>PnL</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -44,33 +50,24 @@
       <div class="card">
         <h2>Trade</h2>
         <form data-role="trade-form" class="form">
-          <label>Symbol
-            <input name="symbol" placeholder="AAPL" value="AAPL" autocomplete="off" />
-          </label>
+          <label>Symbol <input name="symbol" value="AAPL" autocomplete="off"/></label>
           <div class="row">
-            <label>Qty
-              <input name="qty" type="number" placeholder="10" inputmode="numeric" />
-            </label>
-            <label>Price
-              <input name="price" type="number" placeholder="150" inputmode="decimal" />
-            </label>
+            <label>Qty <input name="qty" type="number" placeholder="10"/></label>
+            <label>Price <input name="price" type="number" placeholder="150"/></label>
           </div>
           <label>Action
             <select name="action">
-              <option>Buy</option>
-              <option>Sell</option>
+              <option>Buy</option><option>Sell</option>
             </select>
           </label>
-          <button type="submit" class="btn primary">Submit</button>
-          <div id="formMsg" class="msg" aria-live="polite"></div>
+          <button type="submit" class="btn primary with-glow">Submit</button>
         </form>
       </div>
 
       <div class="card">
         <h2>Notes</h2>
         <textarea data-role="notes-text" placeholder="Strategy notes..." rows="5"></textarea>
-        <button type="button" class="btn outline" data-role="notes-save">Save</button>
-        <div class="muted tiny" id="notesSaved"></div>
+        <button class="btn outline" data-role="notes-save">Save</button>
       </div>
     </section>
 
@@ -79,19 +76,14 @@
       <div class="card">
         <h2>Risk Policy</h2>
         <div class="row">
-          <label>Max risk per trade ($)
-            <input type="number" data-role="pol-risk" placeholder="100" />
-          </label>
-          <label>Max daily loss ($)
-            <input type="number" data-role="pol-daily" placeholder="500" />
-          </label>
-          <label>Max position ($)
-            <input type="number" data-role="pol-position" placeholder="2500" />
-          </label>
+          <label>Max risk per trade ($)<input type="number" data-role="pol-risk"/></label>
+          <label>Max daily loss ($)<input type="number" data-role="pol-daily"/></label>
+          <label>Max position ($)<input type="number" data-role="pol-position"/></label>
         </div>
-        <div class="row">
+        <div class="row wrap gap">
           <button class="btn" data-role="save-policy">Save Policy</button>
           <button class="btn danger" data-role="reset-cash">Reset Cash</button>
+          <button class="btn" data-role="install">Install App</button>
         </div>
       </div>
     </section>
@@ -103,7 +95,8 @@
     <button data-tab="settings">Settings</button>
   </nav>
 
-  <script defer src="ui.js?v=20251013-7"></script>
-  <script defer src="app.20251013.js?v=20251013-7"></script>
+  <div id="toast"></div>
+
+  <script src="app.20251015.js"></script>
 </body>
 </html>
