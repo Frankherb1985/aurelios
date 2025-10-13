@@ -2,134 +2,155 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>AureliOS</title>
-
-  <!-- Theme -->
-  <link rel="stylesheet" href="style.20251013.css" />
-
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
-
-  <!-- App -->
-  <script defer src="app.20251013.js"></script>
-  <script defer src="ui.js"></script>
+  <link rel="stylesheet" href="cinematic.css?v=20251013-2" />
+  <meta name="theme-color" content="#0b0b0d" />
 </head>
 <body class="theme-dark">
-  <header class="app-header">
-    <div class="app-title">
-      <h1>AureliOS</h1>
-      <p class="username">Frank Herbert</p>
+  <header class="hero glass">
+    <div class="hero-left">
+      <h1 class="brand">AureliOS</h1>
+      <div class="owner">Frank Herbert</div>
+      <div class="build" data-role="build"></div>
     </div>
-    <div class="balances">
-      <div>Equity — <span data-role="equity">$10,000.00</span></div>
-      <div>Cash — <span data-role="cash">$10,000.00</span></div>
-      <div class="muted">Build: <span id="build-time"></span></div>
+    <div class="hero-right">
+      <div class="metric"><span class="muted">Equity — </span><span data-role="equity">$10,000.00</span></div>
+      <div class="metric muted"><span>Cash — </span><span data-role="cash">$10,000.00</span></div>
     </div>
   </header>
 
-  <main>
-    <!-- DASHBOARD -->
-    <section id="view-dashboard" class="view active">
-      <div class="card">
-        <div class="card-header">
-          <h2>Watchlist</h2>
-          <div class="risk-box">Risk <span data-role="risk">0%</span></div>
-        </div>
-        <div class="watchlist" id="watchlist">
-          <!-- rows injected -->
-        </div>
-        <div class="strip"></div>
-      </div>
+  <main class="content">
 
-      <div class="stats-row">
-        <div class="stat-card">
-          <div class="label">PnL (Today)</div>
-          <div class="value" data-role="pnl">$0.00</div>
-        </div>
-        <div class="stat-card">
-          <div class="label">Win-Rate</div>
-          <div class="value" data-role="wr">0%</div>
-        </div>
-        <div class="stat-card">
-          <div class="label">Streak</div>
-          <div class="value" data-role="streak">0</div>
+    <!-- WATCHLIST + RISK -->
+    <section class="card glass">
+      <div class="card-title">
+        <h2>Watchlist</h2>
+        <div class="risk-wrap">
+          <svg class="risk" viewBox="0 0 120 120" data-role="riskSvg" aria-label="Risk">
+            <defs>
+              <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%"  stop-color="#ffdf84"/><stop offset="50%" stop-color="#ffd044"/>
+                <stop offset="100%" stop-color="#a8711a"/>
+              </linearGradient>
+              <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <circle cx="60" cy="60" r="46" class="risk-bg"/>
+            <circle cx="60" cy="60" r="46" class="risk-ring" stroke="url(#gGold)"/>
+            <text x="60" y="55" class="risk-label" text-anchor="middle">Risk</text>
+            <text x="60" y="84" class="risk-val" text-anchor="middle" data-role="riskVal">0%</text>
+          </svg>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-header">
-          <h2>Recent Trades</h2>
-        </div>
-        <table class="table" data-role="recent-trades">
-          <thead>
-            <tr><th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Position $</th><th>PnL</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <div class="watchlist" id="watchlist"></div>
+
+      <div class="goldbar">
+        <div class="goldbar-fill" data-role="goldbar"></div>
       </div>
     </section>
 
-    <!-- TRADE -->
-    <section id="view-trade" class="view">
-      <div class="card">
-        <h2>Trade</h2>
-        <form data-role="trade-form" class="form">
+    <!-- KPIs -->
+    <section class="kpis">
+      <div class="kpi glass">
+        <div class="kpi-label">PnL (Today)</div>
+        <div class="kpi-val" data-role="pnl">$0.00</div>
+      </div>
+      <div class="kpi glass">
+        <div class="kpi-label">Win-Rate</div>
+        <div class="kpi-val" data-role="wr">0%</div>
+      </div>
+      <div class="kpi glass">
+        <div class="kpi-label">Streak</div>
+        <div class="kpi-val" data-role="streak">0</div>
+      </div>
+    </section>
+
+    <!-- TRADES TABLE -->
+    <section class="card glass">
+      <div class="card-title"><h2>Recent Trades</h2></div>
+      <table class="table" data-role="recent-trades">
+        <thead>
+          <tr><th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Position $</th><th>PnL</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- TRADE PANEL -->
+    <section class="card glass">
+      <div class="card-title"><h2>Quick Trade</h2></div>
+      <form class="form" data-role="trade-form">
+        <div class="row">
           <label>Symbol
             <input name="symbol" placeholder="AAPL" value="AAPL" autocomplete="off"/>
           </label>
-          <div class="row">
-            <label>Qty
-              <input name="qty" type="number" placeholder="10" inputmode="numeric" />
-            </label>
-            <label>Price
-              <input name="price" type="number" placeholder="150" inputmode="decimal" />
-            </label>
-          </div>
           <label>Action
             <select name="action">
-              <option>Buy</option>
-              <option>Sell</option>
+              <option>Buy</option><option>Sell</option><option>Update Price</option>
             </select>
           </label>
-          <button type="submit" class="btn primary">Submit</button>
-        </form>
-      </div>
+        </div>
+        <div class="row">
+          <label>Shares
+            <input name="qty" type="number" placeholder="10" inputmode="numeric"/>
+          </label>
+          <label>Price
+            <input name="price" type="number" placeholder="150" inputmode="decimal"/>
+          </label>
+        </div>
+        <button type="submit" class="btn glow">Review</button>
+        <div class="msg" data-role="msg"></div>
+      </form>
+    </section>
 
-      <div class="card">
-        <h2>Notes</h2>
-        <textarea data-role="notes-text" placeholder="Strategy notes..." rows="5"></textarea>
-        <button type="button" class="btn outline" data-role="notes-save">Save</button>
-      </div>
+    <!-- NOTES -->
+    <section class="card glass">
+      <div class="card-title"><h2>Notes</h2></div>
+      <textarea rows="5" placeholder="Strategy notes…" data-role="notes-text"></textarea>
+      <button type="button" class="btn outline" data-role="notes-save">Save</button>
     </section>
 
     <!-- SETTINGS -->
-    <section id="view-settings" class="view">
-      <div class="card">
-        <h2>Risk Policy</h2>
-        <div class="row">
-          <label>Max risk per trade ($)
-            <input type="number" data-role="pol-risk" />
-          </label>
-          <label>Max daily loss ($)
-            <input type="number" data-role="pol-daily" />
-          </label>
-          <label>Max position ($)
-            <input type="number" data-role="pol-position" />
-          </label>
-        </div>
+    <section class="card glass">
+      <div class="card-title"><h2>Risk Policy</h2></div>
+      <div class="row">
+        <label>Max risk per trade ($)
+          <input type="number" data-role="pol-risk"/>
+        </label>
+        <label>Max daily loss ($)
+          <input type="number" data-role="pol-daily"/>
+        </label>
+        <label>Max position ($)
+          <input type="number" data-role="pol-position"/>
+        </label>
+      </div>
+      <div class="row">
         <button class="btn" data-role="save-policy">Save Policy</button>
         <button class="btn danger" data-role="reset-cash">Reset Cash</button>
       </div>
     </section>
+
   </main>
 
-  <nav class="tabbar">
-    <button data-tab="dashboard" class="active">Dashboard</button>
-    <button data-tab="trade">Trade</button>
-    <button data-tab="settings">Settings</button>
+  <!-- DOCK -->
+  <nav class="dock glass">
+    <button class="dock-btn active" data-tab="dashboard">
+      <span class="ico">▦</span><span>Dashboard</span>
+    </button>
+    <button class="dock-btn" data-tab="trade">
+      <span class="ico">⟠</span><span>Trade</span>
+    </button>
+    <button class="dock-btn" data-tab="settings">
+      <span class="ico">⚙︎</span><span>Settings</span>
+    </button>
+    <div class="dock-indicator" data-role="dock-ind"></div>
   </nav>
+
+  <script src="app.cinematic.js?v=20251013-2"></script>
 </body>
 </html>
