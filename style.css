@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+body {
+  background-color: #0b0b0b;
+  color: #d4af37;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+}
+
+.app-header {
+  text-align: left;
+  padding: 10px 0;
+}
+
+.app-title {
+  font-size: 2.4rem;
+  background: linear-gradient(180deg, #ffd700 0%, #b8860b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  margin: 0;
+}
+
+.app-user {
+  font-size: 1.1rem;
+  color: #e6c44d;
+  margin-top: 2px;
+}
+
+.stats p {
+  color: #c0b68b;
+  font-size: 0.95rem;
+  margin: 2px 0;
+}
+
+.build-info {
+  font-size: 0.85rem;
+  color: #8c7e48;
+}
+
+.watchlist-card {
+  background: linear-gradient(180deg, #1a1a1a 0%, #101010 100%);
+  border-radius: 15px;
+  padding: 15px;
+  margin-top: 15px;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+.watchlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.watchlist-header h3 {
+  color: #f9d64a;
+  font-size: 1.2rem;
+}
+
+.circular-chart {
+  max-width: 60px;
+  fill: none;
+}
+
+.circle-bg {
+  stroke: #444;
+  stroke-width: 2.8;
+}
+
+.circle {
+  stroke: #d4af37;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+}
+
+.percentage {
+  fill: #d4af37;
+  font-size: 0.45em;
+  text-anchor: middle;
+}
+
+.risk-label {
+  font-size: 0.7rem;
+  color: #c3a93e;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.watchlist {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.watchlist li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.watchlist li img {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0.9);
+}
+
+.watchlist li span {
+  flex: 1;
+  margin-left: 8px;
+  color: #fff;
+}
+
+.watchlist li p {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0 4px;
+}
+
+.up {
+  color: #3ed86b;
+}
+
+.down {
+  color: #ff4d4d;
+}
+
+.trade-card {
+  background: linear-gradient(180deg, #1a1a1a 0%, #101010 100%);
+  border-radius: 15px;
+  padding: 15px;
+  margin-top: 15px;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+}
+
+.trade-card h3 {
+  color: #f9d64a;
+  margin-bottom: 10px;
+}
+
+.trade-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  color: #f2e5a2;
+}
+
+.trade-row label {
+  flex: 1;
+}
+
+.trade-row input, .trade-row select {
+  flex: 2;
+  background: #181818;
+  color: #ffd700;
+  border: 1px solid #4a3b1e;
+  border-radius: 8px;
+  padding: 5px 10px;
+}
+
+#review-btn {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(90deg, #d4af37, #b8860b);
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  margin-top: 12px;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+}
+
+.bottom-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  background: #111;
+  border-radius: 15px;
+  padding: 8px;
+}
+
+.nav-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #c7b67a;
+  font-weight: 600;
+  padding: 10px 0;
+  border-radius: 10px;
+}
+
+.nav-btn.active {
+  background: linear-gradient(90deg, #d4af37, #b8860b);
+  color: #000;
+}
+
+@keyframes progress {
+  0% { stroke-dasharray: 0 100; }
+  100% { stroke-dasharray: 86 100; }
+}
