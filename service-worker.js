@@ -1,35 +1,3 @@
-const CACHE = 'aurelios-v5';
-const ASSETS = [
-  './',
-  './index.html',
-  './cinematic.css?v=20251013-5',
-  './app.cinematic.js?v=20251013-5',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
-];
-
-self.addEventListener('install', e=>{
-  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', e=>{
-  e.waitUntil(
-    caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))
-  );
-  self.clients.claim();
-});
-
-self.addEventListener('fetch', e=>{
-  const url = new URL(e.request.url);
-  if(url.origin===location.origin){
-    e.respondWith(
-      caches.match(e.request).then(resp=>resp || fetch(e.request).then(r=>{
-        const copy = r.clone();
-        caches.open(CACHE).then(c=>c.put(e.request, copy));
-        return r;
-      }))
-    );
-  }
-});
+const CACHE='aurelios-v7';
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','index.html','style.20251013.css','app.20251013.js']))));
+self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
