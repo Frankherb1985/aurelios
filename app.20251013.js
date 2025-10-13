@@ -1,123 +1,20 @@
-// ===== Build tag (lets you confirm fresh JS loaded) =====
-document.getElementById('buildTag').textContent = '2025-10-13 12:15';
-
-// ===== State =====
-const SKEY = 'AURELIOS_STATE_V3';
-const state = {
-  cash: 10000,
-  positions: [],  // {symbol, qty, avg}
-  trades: [],     // {t, symbol, side, qty, price, pos, pnl}
-  policy: { risk: 100, daily: 500, maxpos: 2500 },
-  notes: ''
-};
-
-// ===== Load / Save =====
-function load(){
-  try { Object.assign(state, JSON.parse(localStorage.getItem(SKEY)) || {}); }
-  catch(e){}
-}
-function save(){
-  localStorage.setItem(SKEY, JSON.stringify(state));
-  render();
-}
-load();
-
-// ===== Utils =====
-const fmt = n => Number(n||0).toLocaleString(undefined,{style:'currency',currency:'USD'});
-const now = () => new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-const findPos = s => state.positions.find(p => p.symbol === s.toUpperCase());
-
-// ===== Render =====
-function render(){
-  document.querySelector('[data-role="cash"]').textContent = fmt(state.cash);
-  const eq = state.positions.reduce((a,p)=>a + p.qty*p.avg, 0) + state.cash;
-  document.querySelector('[data-role="equity"]').textContent = fmt(eq);
-
-  // policy inputs
-  document.querySelector('[data-role="pol-risk"]').value = state.policy.risk ?? '';
-  document.querySelector('[data-role="pol-daily"]').value = state.policy.daily ?? '';
-  document.querySelector('[data-role="pol-position"]').value = state.policy.maxpos ?? '';
-
-  // notes
-  document.querySelector('[data-role="notes-text"]').value = state.notes || '';
-
-  // trades table
-  const tbody = document.querySelector('[data-role="recent-trades"] tbody');
-  tbody.innerHTML = '';
-  state.trades.slice(-15).reverse().forEach(r=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${r.t}</td><td>${r.symbol}</td><td>${r.side}</td>
-                    <td>${r.qty}</td><td>${fmt(r.price)}</td>
-                    <td>${fmt(r.pos)}</td><td>${fmt(r.pnl)}</td>`;
-    tbody.appendChild(tr);
-  });
-
-  // risk badge (toy calc: open exposure / maxpos)
-  const exposure = state.positions.reduce((a,p)=>a + Math.abs(p.qty*p.avg), 0);
-  const pct = Math.min(100, Math.round((exposure / Math.max(1, state.policy.maxpos||2500))*100));
-  document.getElementById('riskBadge').textContent = `Risk ${pct}%`;
-}
+const BUILD="2025-10-15 FINAL";document.querySelector('[data-role="build"]').textContent="Build: "+BUILD;
+const SKEY="AURELIOS_STATE_V5";let state={cash:10000,positions:[],trades:[],notes:"",policy:{maxRisk:200,maxDaily:500,maxPosition:5000},watch:["AAPL","TSLA","NVDA","MSFT","GOOG"]};
+try{Object.assign(state,JSON.parse(localStorage.getItem(SKEY))||{})}catch(e){}
+function save(){localStorage.setItem(SKEY,JSON.stringify(state));}
+const money=n=>n.toLocaleString(undefined,{style:"currency",currency:"USD"});
+const toast=(msg)=>{const w=document.getElementById("toast");const t=document.createElement("div");t.className="toast";t.textContent=msg;w.appendChild(t);setTimeout(()=>{t.style.opacity="0";},1500);setTimeout(()=>w.removeChild(t),2000);}
+function render(){document.querySelector('[data-role="cash"]').textContent=money(state.cash);const eq=state.positions.reduce((a,p)=>a+p.qty*p.price,0)+state.cash;document.querySelector('[data-role="equity"]').textContent=money(eq);renderTrades();renderWatchlist();updateRisk();}
+function renderTrades(){const tb=document.querySelector('[data-role="recent-trades"] tbody');tb.innerHTML="";state.trades.slice(-15).reverse().forEach(t=>{const tr=document.createElement("tr");tr.innerHTML=`<td>${t.time}</td><td>${t.symbol}</td><td>${t.side}</td><td>${t.qty}</td><td>${money(t.price)}</td><td class="${t.pnl>=0?"up":"down"}">${money(t.pnl)}</td>`;tb.appendChild(tr);});}
+function renderWatchlist(){const tb=document.querySelector("#watchlist tbody");tb.innerHTML="";state.watch.forEach(s=>{const base=100+Math.random()*200;const change=(Math.random()*4-2).toFixed(2);const price=(base+Number(change)).toFixed(2);const row=document.createElement("tr");row.innerHTML=`<td>${s}</td><td>${price}</td><td class="${change>=0?"up":"down"}">${change}%</td>`;tb.appendChild(row);});}
+function updateRisk(){const exp=state.positions.reduce((a,p)=>a+Math.abs(p.qty*p.price),0);const pct=Math.min(100,Math.round((exp/Math.max(1,state.policy.maxPosition))*100));document.querySelector('[data-role="risk"]').textContent=`Risk ${pct}%`;}
+// ===== Events =====
+document.querySelectorAll(".tabbar button").forEach(btn=>btn.onclick=()=>{document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById("view-"+btn.dataset.tab).classList.add("active");document.querySelectorAll(".tabbar button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");});
+document.querySelector('[data-role="trade-form"]').onsubmit=(e)=>{e.preventDefault();const f=new FormData(e.target);const sym=(f.get("symbol")||"").toUpperCase();const qty=Number(f.get("qty"));const price=Number(f.get("price"));const side=f.get("action");if(!sym||!qty||!price)return toast("Missing fields");let pos=state.positions.find(p=>p.symbol===sym);if(!pos){pos={symbol:sym,qty:0,price:price};state.positions.push(pos);}if(side==="Buy"){if(state.cash<qty*price)return toast("Not enough cash");pos.price=(pos.price*pos.qty+qty*price)/(pos.qty+qty);pos.qty+=qty;state.cash-=qty*price;}else{if(pos.qty<qty)return toast("Not enough shares");pos.qty-=qty;state.cash+=qty*price;}const pnl=side==="Sell"?(price-pos.price)*qty:0;state.trades.push({time:new Date().toLocaleTimeString(),symbol:sym,side,qty,price,pnl});save();render();toast(`${side} ${qty} ${sym} @ ${money(price)}`);}
+document.querySelector('[data-role="notes-save"]').onclick=()=>{state.notes=document.querySelector('[data-role="notes-text"]').value;save();toast("Notes saved");}
+document.querySelector('[data-role="save-policy"]').onclick=()=>{state.policy.maxRisk=Number(document.querySelector('[data-role="pol-risk"]').value)||0;state.policy.maxDaily=Number(document.querySelector('[data-role="pol-daily"]').value)||0;state.policy.maxPosition=Number(document.querySelector('[data-role="pol-position"]').value)||0;save();toast("Policy saved");}
+document.querySelector('[data-role="reset-cash"]').onclick=()=>{state.cash=10000;state.positions=[];state.trades=[];save();render();toast("Cash reset");}
+document.querySelector('[data-role="install"]').onclick=()=>toast("Use 'Add to Home Screen' from Safari");
+setInterval(()=>renderWatchlist(),4000);
 render();
-
-// ===== Handlers =====
-document.querySelector('[data-role="notes-save"]').onclick = () => {
-  state.notes = document.querySelector('[data-role="notes-text"]').value.trim();
-  save();
-  const el = document.getElementById('notesSaved');
-  el.textContent = 'Saved';
-  setTimeout(()=> el.textContent = '', 1200);
-};
-
-document.querySelector('[data-role="save-policy"]').onclick = () => {
-  state.policy.risk = Number(document.querySelector('[data-role="pol-risk"]').value||0);
-  state.policy.daily = Number(document.querySelector('[data-role="pol-daily"]').value||0);
-  state.policy.maxpos = Number(document.querySelector('[data-role="pol-position"]').value||0);
-  save();
-};
-
-document.querySelector('[data-role="reset-cash"]').onclick = () => {
-  state.cash = 10000;
-  state.positions = [];
-  state.trades = [];
-  save();
-};
-
-document.querySelector('[data-role="trade-form"]').onsubmit = (e) => {
-  e.preventDefault();
-  const f = new FormData(e.target);
-  const symbol = (f.get('symbol')||'').toString().trim().toUpperCase();
-  const qty = Number(f.get('qty')||0);
-  const price = Number(f.get('price')||0);
-  const side = (f.get('action')||'Buy').toString();
-
-  const msg = document.getElementById('formMsg');
-  if(!symbol || qty<=0 || price<=0){ msg.textContent = 'Enter symbol, qty, and price'; return; }
-
-  const cost = qty*price;
-  let pos = findPos(symbol);
-  if(!pos){ pos = {symbol, qty:0, avg:0}; state.positions.push(pos); }
-
-  if(side === 'Buy'){
-    if(state.cash < cost){ msg.textContent = 'Insufficient cash'; return; }
-    const newQty = pos.qty + qty;
-    pos.avg = (pos.avg*pos.qty + cost)/newQty;
-    pos.qty = newQty;
-    state.cash -= cost;
-  }else{
-    if(pos.qty < qty){ msg.textContent = 'Not enough shares'; return; }
-    pos.qty -= qty;
-    state.cash += cost;
-    if(pos.qty === 0) pos.avg = 0;
-  }
-
-  const pnl = side==='Sell' ? (price - pos.avg) * qty : 0;
-  state.trades.push({ t: now(), symbol, side, qty, price, pos: pos.qty*pos.avg, pnl });
-  msg.textContent = 'Recorded ✓';
-  setTimeout(()=> msg.textContent='', 1000);
-  save();
-};
-
-// ===== Service worker (register) =====
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js?ver=20251013-7').catch(()=>{});
-}
+if("serviceWorker"in navigator)navigator.serviceWorker.register("service-worker.js?v=20251015");
