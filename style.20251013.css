@@ -1,55 +1,31 @@
-:root{
-  --bg:#0c0c0d; --card:#161617; --raised:#1d1d1f;
-  --gold:#f6c63f; --gold-2:#f0b32c; --text:#f6f6f7; --muted:#8c8c91;
-  --red:#ff5a5a; --green:#4cd964; --blue:#0a84ff;
-  --radius:14px; --shadow:0 0 18px rgba(246,198,63,.25);
-}
-*{box-sizing:border-box}
-html,body{margin:0;height:100%;background:radial-gradient(1200px 600px at 20% 0%,#111 0%,#0b0b0c 40%,#000 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,Inter,system-ui,sans-serif}
-h1,h2{margin:0}
-.muted{color:var(--muted)}
-/* header */
-.app-header{padding:16px 18px;border-radius:0 0 var(--radius) var(--radius);background:linear-gradient(145deg,#111,#1b1b1c);box-shadow:var(--shadow)}
-.app-title h1{color:var(--gold);font-size:2.2rem;font-weight:800}
-.app-title .username{color:var(--gold);font-weight:600;margin:.2rem 0 .1rem}
-.balances{font-size:.95rem;color:var(--muted)}
-/* card */
-.card{background:var(--card);margin:14px;border:1px solid #262627;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.card-header h2{color:var(--gold)}
-.risk-box{border:1px solid var(--gold);color:var(--gold);padding:6px 10px;border-radius:12px;font-weight:700;backdrop-filter:blur(6px)}
-.strip{height:6px;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(246,198,63,.25) 20%,rgba(246,198,63,.8) 50%,rgba(246,198,63,.25) 80%,transparent);margin-top:10px;animation:sweep 2.8s linear infinite}
-@keyframes sweep{0%{background-position:-200px 0}100%{background-position:200px 0}}
-/* watchlist */
-.watchlist{display:grid;grid-template-columns:1fr auto auto;gap:8px 12px;align-items:center}
-.ticker{display:flex;align-items:center;gap:10px;font-weight:700}
-.badge{width:26px;height:26px;border-radius:7px;background:#222;display:grid;place-items:center;border:1px solid #333}
-.price{justify-self:end;font-variant-numeric:tabular-nums}
-.change{justify-self:end;font-weight:700}
-.change.pos{color:var(--green)}
-.change.neg{color:var(--red)}
-/* stats */
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 14px}
-.stat-card{background:var(--raised);border:1px solid #2a2a2b;border-radius:12px;padding:10px 12px}
-.stat-card .label{color:var(--muted);font-size:.8rem}
-.stat-card .value{font-weight:800;color:var(--gold);font-size:1.05rem}
-/* form */
-.form label{display:block;color:var(--muted);font-weight:600;margin:.6rem 0 .3rem}
-input,select,textarea{width:100%;background:#0f0f10;color:var(--text);border:1px solid #2c2c2e;border-radius:12px;padding:12px;outline:none}
-input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(246,198,63,.15)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.btn{display:inline-block;margin-top:12px;padding:12px 16px;border-radius:12px;border:0;cursor:pointer;font-weight:800}
-.btn.primary{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#121212;box-shadow:0 10px 30px rgba(246,198,63,.35)}
-.btn.outline{background:transparent;border:1px solid var(--gold);color:var(--gold)}
-.btn.danger{background:#b33;color:#fff}
-/* table */
-.table{width:100%;border-collapse:collapse}
-.table th,.table td{padding:10px 6px;border-bottom:1px solid #2a2a2b}
-.table th{color:var(--gold);text-align:left}
-.table td{font-variant-numeric:tabular-nums}
-.view{display:none;padding-bottom:84px}
-.view.active{display:block}
-/* tabs */
-.tabbar{position:fixed;bottom:0;left:0;right:0;background:#0f0f10;border-top:1px solid #262627;display:flex;gap:8px;justify-content:space-around;padding:10px}
-.tabbar button{background:transparent;border:0;color:var(--muted);font-weight:700;padding:10px 16px;border-radius:999px}
-.tabbar button.active{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#111}
+body{margin:0;font-family:-apple-system,system-ui,sans-serif;background:#0b0b0d;color:#fff;}
+h1,h2{margin:0;color:#ffdf84;}
+.hero{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.4rem;background:#111;border-bottom:1px solid #222;}
+.hero .brand{font-size:1.8rem;font-weight:700;background:linear-gradient(90deg,#ffdf84,#a8711a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero .metric{font-size:.9rem;color:#aaa;}
+.glass{backdrop-filter:blur(10px);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;}
+.card{margin:1rem;padding:1rem;}
+.card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;}
+.watchlist .w-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem;border-bottom:1px solid rgba(255,255,255,.08);}
+.badge{width:28px;height:28px;border-radius:8px;background:linear-gradient(180deg,#fff,#ccc);color:#111;display:flex;align-items:center;justify-content:center;margin-right:.5rem;}
+.badge svg{width:18px;height:18px;display:block;}
+.w-left{display:flex;align-items:center;gap:.3rem;}
+.change.pos{color:#43d17a;}
+.change.neg{color:#ff625d;}
+.kpis{display:flex;gap:.5rem;justify-content:center;margin:1rem;}
+.kpi{flex:1;text-align:center;padding:.5rem;}
+.btn{background:#ffdf84;border:none;border-radius:8px;padding:.6rem 1rem;margin-top:.5rem;color:#000;font-weight:600;}
+.btn.glow{box-shadow:0 0 10px #ffdf84;}
+.btn.outline{background:transparent;border:1px solid #ffdf84;color:#ffdf84;}
+.btn.danger{background:#ff625d;color:#fff;}
+textarea,input,select{width:100%;border-radius:8px;border:1px solid #333;background:#111;color:#fff;padding:.5rem;margin-top:.4rem;}
+.goldbar{height:4px;background:#222;margin-top:.4rem;border-radius:4px;overflow:hidden;}
+.goldbar-fill{height:100%;background:linear-gradient(90deg,#a8711a,#ffdf84);}
+.risk-bg{fill:none;stroke:#333;stroke-width:8;}
+.risk-ring{fill:none;stroke-width:8;stroke-linecap:round;transform:rotate(-90deg);transform-origin:center;}
+.risk-label{font-size:14px;fill:#aaa;}
+.risk-val{font-size:16px;fill:#ffdf84;font-weight:700;}
+.dock{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:.4rem;background:#111;}
+.dock-btn{flex:1;color:#aaa;background:none;border:none;padding:.4rem 0;}
+.dock-btn.active{color:#ffdf84;font-weight:700;}
+.dock-ind{position:absolute;bottom:0;left:0;height:3px;width:33%;background:#ffdf84;transition:left .3s;}
