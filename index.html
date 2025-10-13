@@ -1,17 +1,72 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="AureliOS" />
-<link rel="apple-touch-icon" href="icons/icon-192.png" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AureliOS</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="style.css?v=20251007-2">
+  <meta name="theme-color" content="#0b0b0e">
+
+  <!-- SAFE-MODE INLINE CSS (so you see the design even if external files fail) -->
+  <style>
+    :root{
+      --bg:#0b0b0e; --panel:#14141a; --muted:#b7b7c2; --text:#eaeaf0;
+      --stroke:#2c2c34; --gold1:#ffd35c; --gold2:#d6a421; --gold3:#b48616;
+      --ok:#44d27a; --bad:#ff5a67;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);
+         font:400 16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,Roboto,sans-serif;}
+    .app-header{position:sticky;top:0;z-index:3;padding:20px 16px 14px;
+      background:linear-gradient(135deg,#14141a,#0d0d10);border-bottom:1px solid var(--stroke)}
+    .app-title{font-weight:800;font-size:28px;color:var(--gold1);letter-spacing:.2px}
+    .app-sub{margin-top:4px;color:var(--gold2);font-weight:600}
+    .balances{margin-top:8px;color:var(--muted)}
+    main{padding:14px 10px 90px}
+    .view{display:none}
+    .view.active{display:block}
+    .card{margin:10px 6px;border:1px solid var(--stroke);border-radius:16px;background:var(--panel);padding:14px 12px}
+    h2{margin:0 0 10px;color:var(--gold1);font-weight:700;letter-spacing:.2px}
+
+    /* table */
+    .table{width:100%;border-collapse:collapse}
+    .table th,.table td{padding:10px 8px;border-bottom:1px solid #1f1f27}
+    .table th{color:var(--gold2);font-weight:700;text-align:left}
+
+    /* form */
+    .form label{display:block;margin:12px 0 6px;color:#d7d7df}
+    .row{display:flex;gap:10px}
+    .row label{flex:1}
+    input,select,textarea{
+      width:100%;background:#0f0f14;border:1px solid var(--stroke);color:var(--text);
+      padding:12px 12px;border-radius:12px;outline:none;appearance:none}
+    input:focus,select:focus,textarea:focus{border-color:#3b3b46;box-shadow:0 0 0 2px #1d1d26}
+    .btn{display:inline-block;padding:14px 16px;border-radius:14px;border:1px solid #3a3a45;
+      background:#1a1a22;color:var(--text);font-weight:600}
+    .btn.primary{background:linear-gradient(180deg,var(--gold1),var(--gold2));border-color:var(--gold3);color:#18160b}
+    .btn.outline{border-color:var(--gold2);color:var(--gold2);background:transparent}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;
+      background:rgba(255,211,92,.06);border:1px solid rgba(214,164,33,.35);color:var(--gold1);font-weight:700}
+
+    /* tabbar */
+    nav.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:3;display:flex;justify-content:space-around;
+      gap:8px;padding:10px;backdrop-filter:blur(10px);
+      background:rgba(10,10,14,.7);border-top:1px solid var(--stroke)}
+    nav.tabbar button{flex:1;background:transparent;border:0;color:#c9c9d2;padding:12px;border-radius:12px;font-weight:600}
+    nav.tabbar button.active{color:#0c0c10;background:linear-gradient(180deg,var(--gold1),var(--gold2))}
+    .muted{opacity:.8}
+
+    /* up/down colors */
+    .up{color:var(--ok)} .down{color:var(--bad)}
+
+    /* watchlist list style for later expansion */
+    .watch-row{display:flex;align-items:center;justify-content:space-between;padding:10px 6px;border-bottom:1px solid #1f1f27}
+    .watch-left{display:flex;align-items:center;gap:10px}
+    .ticker{font-weight:800;color:#f6f6fb}
+    .price{font-weight:700}
+  </style>
 </head>
-<body class="theme-dark">
+<body>
   <header class="app-header">
     <div class="app-title">AureliOS</div>
     <div class="app-sub">Frank Herbert</div>
@@ -25,13 +80,7 @@
     <!-- DASHBOARD -->
     <section id="view-dashboard" class="view active">
       <div class="card">
-        <div class="card-head">
-          <h2>Recent Trades</h2>
-          <div class="risk">
-            <div class="risk-gauge" aria-hidden="true"></div>
-            <div class="risk-label">Risk</div>
-          </div>
-        </div>
+        <h2>Recent Trades <span class="pill" id="riskPill">Risk 0%</span></h2>
         <table class="table" data-role="recent-trades">
           <thead>
             <tr><th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Position $</th><th>PnL</th></tr>
@@ -63,14 +112,14 @@
               <option>Sell</option>
             </select>
           </label>
-          <button type="submit" class="btn primary glow" data-ux="press">Submit</button>
+          <button type="submit" class="btn primary">Submit</button>
         </form>
       </div>
 
       <div class="card">
         <h2>Notes</h2>
         <textarea data-role="notes-text" placeholder="Strategy notes..." rows="5"></textarea>
-        <button type="button" class="btn outline" data-ux="press" data-role="notes-save">Save</button>
+        <button type="button" class="btn outline" data-role="notes-save">Save</button>
       </div>
     </section>
 
@@ -89,23 +138,78 @@
             <input type="number" data-role="pol-position" />
           </label>
         </div>
-        <div class="row">
-          <button class="btn" data-ux="press" data-role="save-policy">Save Policy</button>
-          <button class="btn danger" data-ux="press" data-role="reset-cash">Reset Cash</button>
-        </div>
+        <button class="btn" data-role="save-policy">Save Policy</button>
+        <button class="btn outline" data-role="reset-cash">Reset Cash</button>
       </div>
     </section>
   </main>
 
   <nav class="tabbar">
-    <button data-tab="dashboard" class="active" data-ux="press">Dashboard</button>
-    <button data-tab="trade" data-ux="press">Trade</button>
-    <button data-tab="settings" data-ux="press">Settings</button>
+    <button data-tab="dashboard" class="active">Dashboard</button>
+    <button data-tab="trade">Trade</button>
+    <button data-tab="settings">Settings</button>
   </nav>
 
-  <!-- Your trading logic -->
-  <script src="app.js?v=20251007-2" defer></script>
-  <!-- Design-only micro-interactions -->
-  <script src="ui.js?v=1" defer></script>
+  <!-- SAFE-MODE INLINE JS (tab switching + tiny state; you can keep your app.js instead) -->
+  <script>
+    // tabs
+    document.querySelectorAll('nav.tabbar button').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('nav.tabbar button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const id = 'view-'+btn.dataset.tab;
+        document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+      });
+    });
+
+    // minimal state so header updates when you submit a fake trade
+    const state = { cash: 10000, equity: 10000, trades: [] };
+    const fmtUSD = n=> n.toLocaleString(undefined,{style:'currency',currency:'USD'});
+    function renderHeader(){
+      document.querySelector('[data-role="equity"]').textContent = fmtUSD(state.equity);
+      document.querySelector('[data-role="cash"]').textContent = fmtUSD(state.cash);
+    }
+    renderHeader();
+
+    const tbody = document.querySelector('[data-role="recent-trades"] tbody');
+    function addRow(t){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${new Date().toLocaleTimeString()}</td>
+        <td>${t.symbol}</td>
+        <td>${t.action}</td>
+        <td>${t.qty}</td>
+        <td>${t.price}</td>
+        <td>${(t.qty*t.price).toFixed(2)}</td>
+        <td class="${t.action==='Buy'?'down':'up'}">${t.action==='Buy' ? '-'+(t.qty*t.price).toFixed(2) : '+'+(t.qty*t.price).toFixed(2)}</td>
+      `;
+      tbody.prepend(tr);
+    }
+
+    document.querySelector('[data-role="trade-form"]').addEventListener('submit', e=>{
+      e.preventDefault();
+      const f = new FormData(e.target);
+      const symbol = f.get('symbol').toUpperCase().trim() || 'AAPL';
+      const qty = Number(f.get('qty')||0);
+      const price = Number(f.get('price')||0);
+      const action = f.get('action')||'Buy';
+      if(!qty || !price) return;
+      const total = qty*price;
+      state.cash += (action==='Buy' ? -total : total);
+      state.equity = state.cash;  // demo
+      renderHeader();
+      addRow({symbol,qty,price,action});
+      e.target.reset();
+    });
+
+    // Notes
+    document.querySelector('[data-role="notes-save"]').addEventListener('click',()=>{
+      const txt = document.querySelector('[data-role="notes-text"]').value.trim();
+      if(txt) alert('Saved:\n\n'+txt);
+    });
+  </script>
+
+  <!-- OPTIONAL: once you confirm design, move CSS to style.css and JS to app.js and link them -->
 </body>
 </html>
