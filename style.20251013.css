@@ -1,94 +1,136 @@
-:root{
-  --bg:#0b0b0b; --panel:#141414; --panel2:#191919;
-  --text:#f2f2f2; --muted:#9c9c9c;
-  --gold:#f5c342; --gold-2:#d4af37; --glow:0 0 16px rgba(245,195,66,.35);
-  --green:#22c55e; --red:#ef4444; --radius:16px;
+:root {
+  --bg: #0c0c0d;
+  --card: #1a1a1b;
+  --accent: #f6c63f;
+  --muted: #8a8a8a;
+  --text: #f5f5f5;
+  --shadow: 0 0 10px rgba(246,198,63,0.3);
+  --radius: 14px;
 }
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  background:radial-gradient(1200px 600px at -10% -10%,#1a1405 0%,transparent 35%),var(--bg);
-  color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",system-ui,sans-serif;
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
 }
 
-.app-wrap{max-width:480px;margin:0 auto;padding:16px 16px 86px}
-.app-header{
-  display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px;
-  background:linear-gradient(145deg,#15110a,#0e0e0e);
-  border-radius:20px; padding:16px 18px; box-shadow:var(--glow);
+.app-header {
+  background: linear-gradient(145deg, #111, #1a1a1b);
+  padding: 1rem 1.5rem;
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: var(--shadow);
 }
-.logo{margin:0;font-size:32px;letter-spacing:.5px;color:var(--gold)}
-.logo span{color:var(--gold-2)}
-.byline{color:var(--gold-2);margin-top:2px;font-weight:600}
-.balances{text-align:right}
-.balances .muted{color:var(--muted)}
-.small{font-size:12px}
 
-.content .card{
-  background:linear-gradient(180deg,var(--panel),var(--panel2));
-  border:1px solid #222; border-radius:var(--radius);
-  padding:14px 14px 10px; margin-bottom:16px; box-shadow:var(--glow);
-  animation:fadeUp .35s ease;
+.app-title h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+  margin: 0;
 }
-.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-h2{margin:0;color:var(--gold);font-size:20px}
-.risk-pill{border:1px solid var(--gold-2);border-radius:999px;padding:6px 12px;color:var(--gold)}
 
-.table{display:grid;gap:8px}
-.header-3,.body-3{grid-template-columns:1fr .8fr .8fr}
-.header-6,.body-6{grid-template-columns:1.1fr .7fr .6fr .5fr .7fr .7fr}
-.table.header-3,.table.header-6{color:var(--gold-2);font-weight:600;border-bottom:1px solid #242424;padding-bottom:6px;margin-bottom:6px}
-
-.row{display:flex;gap:10px}
-.col{flex:1}
-.row.gap{gap:12px}
-
-input,select,textarea{
-  width:100%;background:#0f0f0f;border:1px solid #262626;border-radius:12px;color:var(--text);
-  padding:12px 14px;font-size:16px;outline:none;transition:border .15s,box-shadow .15s;
+.app-title p {
+  color: var(--accent);
+  font-weight: 600;
+  margin: 0;
 }
-input:focus,select:focus,textarea:focus{border-color:var(--gold-2);box-shadow:0 0 0 3px rgba(245,195,66,.15)}
-textarea{min-height:110px;resize:vertical}
 
-.btn{
-  appearance:none;border:none;border-radius:14px;padding:12px 16px;background:#272727;color:#fff;
-  font-weight:600;cursor:pointer;transition:transform .1s,box-shadow .2s,background .2s;
+.balances {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
-.btn:hover{transform:translateY(-1px)}
-.btn.primary{background:var(--gold);color:#000}
-.btn.outline{background:transparent;border:1px solid var(--gold-2);color:var(--gold)}
-.btn.danger{background:#3a0e0e}
-.btn.glow{box-shadow:0 0 18px rgba(245,195,66,.45)}
-.btn.primary.glow:active{transform:translateY(0) scale(.98)}
 
-.tabbar{
-  position:fixed;left:50%;transform:translateX(-50%);
-  bottom:12px;right:12px;max-width:480px;
-  display:flex;gap:10px;background:#0e0e0e;border:1px solid #1f1f1f;border-radius:18px;padding:8px;
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  margin: 1rem;
+  padding: 1rem;
+  box-shadow: var(--shadow);
 }
-.tabbar button{
-  flex:1;background:transparent;border:none;color:var(--muted);
-  padding:12px 8px;border-radius:12px;font-weight:700;position:relative;overflow:hidden;
-}
-.tabbar button.active{background:var(--gold);color:#000;box-shadow:var(--glow)}
 
-.ticker{display:contents}
-.ticker .sym{font-weight:700;display:flex;align-items:center;gap:8px}
-.ticker .price{justify-self:end}
-.ticker .chg{justify-self:end}
-.chg.pos{color:var(--green)} .chg.neg{color:var(--red)}
-.flash-up{animation:flashUp .6s} .flash-down{animation:flashDown .6s}
-@keyframes flashUp{0%{background:rgba(34,197,94,.12)}100%{background:transparent}}
-@keyframes flashDown{0%{background:rgba(239,68,68,.12)}100%{background:transparent}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
-/* ripple feedback */
-.ripple{
-  position:absolute;width:12px;height:12px;border-radius:999px;background:rgba(245,195,66,.45);
-  transform:translate(-50%,-50%);pointer-events:none;animation:ripple .45s ease-out forwards;
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.btn,.tabbar button{position:relative;overflow:hidden}
-@keyframes ripple{from{opacity:.7;transform:translate(-50%,-50%) scale(.5)}to{opacity:0;transform:translate(-50%,-50%) scale(8)}}
+
+.card-header h2 {
+  color: var(--accent);
+}
+
+.risk-box {
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.6rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+input, select, textarea {
+  background: #111;
+  color: var(--text);
+  border: 1px solid #333;
+  border-radius: var(--radius);
+  padding: 0.6rem;
+  width: 100%;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: var(--radius);
+  background: #222;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn.primary {
+  background: var(--accent);
+  color: #000;
+  box-shadow: 0 0 20px rgba(246,198,63,0.4);
+}
+
+.btn.primary:hover {
+  filter: brightness(1.1);
+}
+
+.btn.outline {
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
+.btn.danger {
+  background: #b33;
+  color: #fff;
+}
+
+.tabbar {
+  display: flex;
+  justify-content: space-around;
+  background: #111;
+  border-top: 1px solid #333;
+  padding: 0.5rem 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.tabbar button {
+  background: transparent;
+  color: var(--muted);
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.tabbar button.active {
+  color: #000;
+  background: var(--accent);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+}
