@@ -4,36 +4,29 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>AureliOS</title>
-
-  <!-- PWA -->
   <meta name="theme-color" content="#0b0b0d" />
   <link rel="manifest" href="manifest.json" />
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="cinematic.css?v=20251013-5" />
+  <link rel="stylesheet" href="style.20251013.css?v=7.0" />
 </head>
 <body class="theme-dark">
-  <!-- ========= SVG SPRITE (brand icons) ========= -->
-  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <!-- ===== SVG SPRITE (brand icons) ===== -->
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:none">
     <symbol id="ico-aapl" viewBox="0 0 1024 1024">
-      <path fill="#000" d="M762 834c-28 43-58 84-105 85-46 1-61-27-114-27-54 0-70 26-115 28-46 2-81-46-108-87-59-92-104-261-43-376 30-56 84-92 145-93 46 0 90 31 114 31 24 0 78-38 131-33 22 1 84 9 124 69-3 2-75 44-74 132 1 105 91 140 92 140-1 3-14 51-47 111z"/>
-      <path fill="#000" d="M653 167c24-30 40-72 36-114-35 1-79 22-105 52-23 27-43 69-38 110 40 3 82-20 107-48z"/>
+      <path fill="currentColor" d="M762 834c-28 43-58 84-105 85-46 1-61-27-114-27-54 0-70 26-115 28-46 2-81-46-108-87-59-92-104-261-43-376 30-56 84-92 145-93 46 0 90 31 114 31 24 0 78-38 131-33 22 1 84 9 124 69-3 2-75 44-74 132 1 105 91 140 92 140-1 3-14 51-47 111z"/>
+      <path fill="currentColor" d="M653 167c24-30 40-72 36-114-35 1-79 22-105 52-23 27-43 69-38 110 40 3 82-20 107-48z"/>
     </symbol>
     <symbol id="ico-tsla" viewBox="0 0 1024 1024">
-      <path fill="#fff" d="M512 160c115 0 231 21 320 64l-45 77c-82-38-174-57-275-57s-193 19-275 57l-45-77c89-43 205-64 320-64zm-29 678V318h58v520l152-158h97L512 896 292 680h97l152 158z"/>
+      <path fill="currentColor" d="M512 160c115 0 231 21 320 64l-45 77c-82-38-174-57-275-57s-193 19-275 57l-45-77c89-43 205-64 320-64zm-29 678V318h58v520l152-158h97L512 896 292 680h97l152 158z"/>
     </symbol>
     <symbol id="ico-nvda" viewBox="0 0 1024 1024">
-      <path fill="#76b900" d="M129 319v383l383 256 383-256V319L512 64 129 319zM512 806l-236-157V375l236-157 236 157v274L512 806z"/>
-      <path fill="#fff" d="M512 321c-105 0-191 86-191 191s86 191 191 191 191-86 191-191S617 321 512 321zm0 311c-66 0-120-54-120-120s54-120 120-120 120 54 120 120-54 120-120 120z"/>
+      <path fill="currentColor" d="M129 319v383l383 256 383-256V319L512 64 129 319zM512 806l-236-157V375l236-157 236 157v274L512 806z"/>
+      <path fill="currentColor" d="M512 321c-105 0-191 86-191 191s86 191 191 191 191-86 191-191S617 321 512 321zm0 311c-66 0-120-54-120-120s54-120 120-120 120 54 120 120-54 120-120 120z"/>
     </symbol>
     <symbol id="ico-msft" viewBox="0 0 1024 1024">
-      <path fill="#f35325" d="M480 480H64V64h416z"/>
-      <path fill="#81bc06" d="M960 480H544V64h416z"/>
-      <path fill="#05a6f0" d="M480 960H64V544h416z"/>
-      <path fill="#ffba08" d="M960 960H544V544h416z"/>
+      <path fill="currentColor" d="M480 480H64V64h416z"/><path fill="currentColor" d="M960 480H544V64h416z"/><path fill="currentColor" d="M480 960H64V544h416z"/><path fill="currentColor" d="M960 960H544V544h416z"/>
     </symbol>
   </svg>
-  <!-- ============================================ -->
+  <!-- ==================================== -->
 
   <header class="hero glass">
     <div class="hero-left">
@@ -42,100 +35,72 @@
       <div class="build" data-role="build"></div>
     </div>
     <div class="hero-right">
-      <div class="metric"><span class="muted">Equity — </span><span data-role="equity">$10,000.00</span></div>
-      <div class="metric muted"><span>Cash — </span><span data-role="cash">$10,000.00</span></div>
+      <div class="metric"><span>Equity — </span><span data-role="equity">$10,000.00</span></div>
+      <div class="metric"><span>Cash — </span><span data-role="cash">$10,000.00</span></div>
     </div>
   </header>
 
   <main class="content">
-    <!-- Watchlist -->
     <section class="card glass">
       <div class="card-title">
         <h2>Watchlist</h2>
         <div class="risk-wrap">
           <svg class="risk" viewBox="0 0 120 120">
-            <defs>
-              <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#ffdf84"/><stop offset="50%" stop-color="#ffd044"/><stop offset="100%" stop-color="#a8711a"/>
-              </linearGradient>
-            </defs>
+            <defs><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffdf84"/><stop offset="50%" stop-color="#ffd044"/><stop offset="100%" stop-color="#a8711a"/></linearGradient></defs>
             <circle cx="60" cy="60" r="46" class="risk-bg"/>
-            <circle cx="60" cy="60" r="46" class="risk-ring" stroke="url(#gGold)" data-role="riskArc"/>
-            <text x="60" y="55" class="risk-label" text-anchor="middle">Risk</text>
-            <text x="60" y="84" class="risk-val" text-anchor="middle" data-role="riskVal">0%</text>
+            <circle cx="60" cy="60" r="46" class="risk-ring" stroke="url(#gold)" data-role="riskArc"/>
+            <text x="60" y="55" text-anchor="middle" class="risk-label">Risk</text>
+            <text x="60" y="84" text-anchor="middle" class="risk-val" data-role="riskVal">0%</text>
           </svg>
         </div>
       </div>
-      <div class="watchlist" id="watchlist"></div>
+      <div id="watchlist"></div>
       <div class="goldbar"><div class="goldbar-fill" data-role="goldbar"></div></div>
     </section>
 
-    <!-- KPIs -->
     <section class="kpis">
-      <div class="kpi glass"><div class="kpi-label">PnL (Today)</div><div class="kpi-val" data-role="pnl">$0.00</div></div>
-      <div class="kpi glass"><div class="kpi-label">Win-Rate</div><div class="kpi-val" data-role="wr">0%</div></div>
-      <div class="kpi glass"><div class="kpi-label">Streak</div><div class="kpi-val" data-role="streak">0</div></div>
+      <div class="kpi glass"><div>PnL (Today)</div><div data-role="pnl">$0.00</div></div>
+      <div class="kpi glass"><div>Win-Rate</div><div data-role="wr">0%</div></div>
+      <div class="kpi glass"><div>Streak</div><div data-role="streak">0</div></div>
     </section>
 
-    <!-- Recent Trades -->
-    <section class="card glass">
-      <div class="card-title"><h2>Recent Trades</h2></div>
-      <table class="table" data-role="recent-trades">
-        <thead><tr><th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Position $</th><th>PnL</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </section>
-
-    <!-- Quick Trade -->
     <section class="card glass">
       <div class="card-title"><h2>Quick Trade</h2></div>
-      <form class="form" data-role="trade-form">
-        <div class="row">
-          <label>Symbol <input name="symbol" value="AAPL" /></label>
-          <label>Action
-            <select name="action">
-              <option>Buy</option><option>Sell</option><option>Update Price</option>
-            </select>
-          </label>
-        </div>
-        <div class="row">
-          <label>Shares <input name="qty" type="number" placeholder="10" /></label>
-          <label>Price <input name="price" type="number" placeholder="150" /></label>
-        </div>
+      <form data-role="trade-form">
+        <label>Symbol <input name="symbol" value="AAPL"></label>
+        <label>Action <select name="action"><option>Buy</option><option>Sell</option><option>Update Price</option></select></label>
+        <label>Shares <input name="qty" type="number" value="10"></label>
+        <label>Price <input name="price" type="number" value="150"></label>
         <button type="submit" class="btn glow">Review</button>
-        <div class="msg" data-role="msg"></div>
+        <div data-role="msg" class="msg"></div>
       </form>
     </section>
 
-    <!-- Notes -->
     <section class="card glass">
       <div class="card-title"><h2>Notes</h2></div>
-      <textarea rows="5" placeholder="Strategy notes…" data-role="notes-text"></textarea>
-      <button type="button" class="btn outline" data-role="notes-save">Save</button>
+      <textarea data-role="notes-text" rows="4" placeholder="Strategy notes..."></textarea>
+      <button class="btn outline" data-role="notes-save">Save</button>
     </section>
 
-    <!-- Risk Policy -->
     <section class="card glass">
       <div class="card-title"><h2>Risk Policy</h2></div>
+      <label>Max Risk <input type="number" data-role="pol-risk" value="200"></label>
+      <label>Max Daily Loss <input type="number" data-role="pol-daily" value="500"></label>
+      <label>Max Position <input type="number" data-role="pol-position" value="5000"></label>
       <div class="row">
-        <label>Max risk per trade ($)<input type="number" data-role="pol-risk" /></label>
-        <label>Max daily loss ($)<input type="number" data-role="pol-daily" /></label>
-        <label>Max position ($)<input type="number" data-role="pol-position" /></label>
-      </div>
-      <div class="row">
-        <button class="btn" data-role="save-policy">Save Policy</button>
-        <button class="btn danger" data-role="reset-cash">Reset Cash</button>
+        <button class="btn" data-role="save-policy">Save</button>
+        <button class="btn danger" data-role="reset-cash">Reset</button>
       </div>
     </section>
   </main>
 
   <nav class="dock glass">
-    <button class="dock-btn active" data-tab="dashboard"><span class="ico">▦</span><span>Dashboard</span></button>
-    <button class="dock-btn" data-tab="trade"><span class="ico">⟠</span><span>Trade</span></button>
-    <button class="dock-btn" data-tab="settings"><span class="ico">⚙︎</span><span>Settings</span></button>
-    <div class="dock-indicator" data-role="dock-ind"></div>
+    <button class="dock-btn active"><span>Dashboard</span></button>
+    <button class="dock-btn"><span>Trade</span></button>
+    <button class="dock-btn"><span>Settings</span></button>
+    <div class="dock-ind" data-role="dock-ind"></div>
   </nav>
 
-  <script src="app.cinematic.js?v=20251013-5"></script>
+  <script src="app.20251013.js?v=7.0"></script>
 </body>
 </html>
