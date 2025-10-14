@@ -1,27 +1,20 @@
-// ✅ cinematic cache
-const CACHE = "aurelios-v12";
-const ASSETS = [
-  "./",
-  "./index.html",
-  "./style.cinematic.css?v=12",
-  "./app.cinematic.js?v=12",
-  "./icon-192.png",
-  "./icon-512.png"
-];
-self.addEventListener("install", e=>{
-  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));
+const CACHE='aurelios-final-v1';
+self.addEventListener('install',e=>{
   self.skipWaiting();
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll([
+    './','./index.html','./style.css?v=final','./app.js?v=final','./manifest.json'
+  ])));
 });
-self.addEventListener("activate", e=>{
+self.addEventListener('activate',e=>{
   e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));
   self.clients.claim();
 });
-self.addEventListener("fetch", e=>{
-  const req=e.request;
-  e.respondWith(
-    caches.match(req).then(r=>r||fetch(req).then(net=>{
-      if(req.method==="GET"){const copy=net.clone();caches.open(CACHE).then(c=>c.put(req,copy));}
-      return net;
-    }))
-  );
+self.addEventListener('fetch',e=>{
+  const url=new URL(e.request.url);
+  if(/\.(html|css|js)$/.test(url.pathname))
+    e.respondWith(fetch(e.request).then(r=>{
+      const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return r;
+    }).catch(()=>caches.match(e.request)));
+  else
+    e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));
 });
